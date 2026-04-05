@@ -15,5 +15,26 @@
   home.file.".config/uwsm".source = ./config/uwsm;
   home.file.".config/waybar".source = ./config/waybar;
   home.file.".config/zsh".source = ./config/zsh;
+
+
+  #install zsh and configure
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    enableBashCompletion = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+    histSize = 10000;
+    initExtra = ''
+    eval "$(starship init zsh)"
+    '';
+
+  };
+
+  programs.starship = {
+  enable = true;
+  configFile = ./config/starship/starship.toml;
+};
+
 }
 
