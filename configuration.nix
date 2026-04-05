@@ -105,20 +105,9 @@
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
     histSize = 10000;
-    promptInit = ''
-      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-      source /etc/powerlevel10k/p10k.zsh
-      if [[ -r "''${XDG_CACHE_HOME:-''$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-        source "''${XDG_CACHE_HOME:-''$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-      fi
-
-    '';
   };
 
   users.defaultUserShell = pkgs.zsh;
-
-  system.userActivationScripts.zshrc = "touch .zshrc"; # to avoid being prompted to generate the config for first time
-  environment.shells = [ pkgs.zsh] ; # https://wiki.nixos.org/wiki/Zsh#GDM_does_not_show_user_when_zsh_is_the_default_shell
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -136,8 +125,9 @@
     waybar
     neovim
     kitty
-    zsh-powerlevel10k
-    meslo-lgs-nf
+    starship
+    uwsm
+    rofi
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
