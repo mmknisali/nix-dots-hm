@@ -32,6 +32,12 @@
   
   services.getty.autologinUser = "ali";
 
+  #fonts for icons and waybar
+  fonts.packages = with pkgs; [
+  lexend
+  nerd-fonts.jetbrains-mono
+  ];
+
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
