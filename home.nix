@@ -11,7 +11,7 @@
   home.file.".config/kitty".source = ./config/kitty;
   home.file.".config/nvim".source = ./config/nvim;
   home.file.".config/rofi".source = ./config/rofi;
-  home.file.".config/starship".source = ./config/starship;
+  home.file.".config/starship.toml".source = ./config/starship/starship.toml;
   home.file.".config/uwsm".source = ./config/uwsm;
   home.file.".config/waybar".source = ./config/waybar;
   home.file.".config/zsh".source = ./config/zsh;
@@ -21,19 +21,18 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    enableBashCompletion = true;
-    autosuggestions.enable = true;
+    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    histSize = 10000;
-    initExtra = ''
+    initContent = ''
     eval "$(starship init zsh)"
     '';
-
   };
+  
+  services.swaync.enable = true;
+
 
   programs.starship = {
   enable = true;
-  configFile = ./config/starship/starship.toml;
 };
 
 }

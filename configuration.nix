@@ -97,7 +97,7 @@
     ];
   };
 
-
+  programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
   # Install firefox.
@@ -105,6 +105,15 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  #enable bluetooth stuff
+  hardware.bluetooth = {
+  enable = true;
+  powerOnBoot = true;
+  };
+
+  #enable blueman
+  services.blueman.enable = true;
+
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -119,7 +128,11 @@
     starship
     uwsm
     rofi
-  ];
+    swaynotificationcenter
+    playerctl
+    wlogout
+    blueman
+    ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
