@@ -1,77 +1,115 @@
 {
-    "layer": "top",
-    "output": [
-        "*"
-    ],
-    "height": 10,
-    "exclusive": true,
-    "passthrough": false,
-    "reload_style_on_change": true,
-    "include": [
-        "$XDG_CONFIG_HOME/waybar/modules/*json*", 
-        "$XDG_CONFIG_HOME/waybar/includes/includes.json" 
-    ],
-    "modules-left": [
-        "group/pill#left1",
-        "group/pill#left2"
-    ],
-    "group/pill#left1": {
-        "orientation": "inherit",
-        "modules": [
-            "cpu",
-            "memory"
-        ]
+  "layer": "bottom",
+  "position": "top",
+  "height": 40,
+  "spacing": 2,
+  "exclusive": true,
+  "gtk-layer-shell": true,
+  "passthrough": false,
+  "fixed-center": true,
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["mpris"],
+  "modules-right": [
+    "cpu",
+    "memory",
+    "pulseaudio",
+    "clock",
+    "clock#simpleclock",
+    "tray",
+    "custom/notification",
+    "custom/power",
+  ],
+  "custom/spotify": {
+    "format": "  {}",
+    "return-type": "json",
+    "on-click": "playerctl -p spotify play-pause",
+    "on-click-right": "spotifatius toggle-liked",
+    "on-click-middle": "playerctl -p spotify next",
+    "exec": "spotifatius monitor",
+  },
+  "mpris": {
+    "player": "spotify",
+    "dynamic-order": ["artist", "title"],
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{status_icon} <i>{dynamic}</i>",
+    "status-icons": {
+      "paused": "",
     },
-    "group/pill#left2": {
-        "orientation": "inherit",
-        "modules": [
-            "idle_inhibitor",
-            "clock"
-        ]
+    "player-icons": {
+      "default": "",
     },
-    "modules-center": [
-        "group/pill#center"
-    ],
-    "group/pill#center": {
-        "modules": [
-            "hyprland/workspaces",
-            "hyprland/window"
-        ],
-        "orientation": "inherit"
+  },
+  "hyprland/workspaces": {
+    "on-click": "activate",
+    "format": "{id}",
+    "all-outputs": true,
+    "disable-scroll": false,
+    "active-only": false,
+  },
+  "hyprland/window": {
+    "format": "{title}",
+  },
+  "tray": {
+    "show-passive-items": true,
+    "spacing": 10,
+  },
+  "clock#simpleclock": {
+    "tooltip": false,
+    "format": " {:%H:%M}",
+  },
+  "clock": {
+    "format": " {:L%a %d %b}",
+    "calendar": {
+      "format": {
+        "days": "<span weight='normal'>{}</span>",
+        "months": "<span color='#cdd6f4'><b>{}</b></span>",
+        "today": "<span color='#f38ba8' weight='700'><u>{}</u></span>",
+        "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
+        "weeks": "<span color='#a6e3a1'><b>W{}</b></span>",
+      },
+      "mode": "month",
+      "mode-mon-col": 1,
+      "on-scroll": 1,
     },
-    "modules-right": [
-        "group/pill#right1",
-        "group/pill#right2",
-        "group/pill#right3"
-    ],
-    "group/pill#right1": {
-        "modules": [
-            "backlight",
-            "network",
-            "pulseaudio",
-            "pulseaudio#microphone",
-            "custom/updates",
-            "custom/keybindhint"
-        ],
-        "orientation": "inherit"
+    "tooltip-format": "<span color='#cdd6f4' font='Lexend 16'><tt><small>{calendar}</small></tt></span>",
+  },
+  "cpu": {
+    "format": " {usage}%",
+    "tooltip": true,
+    "interval": 1,
+  },
+  "memory": {
+    "format": " {used:0.1f}Gi",
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "  muted",
+    "format-icons": {
+      "headphone": "",
+      "default": [" ", " ", " "],
     },
-    "group/pill#right2": {
-        "modules": [
-            "privacy",
-            "tray",
-            "battery"
-        ],
-        "orientation": "inherit"
+    "on-click": "pavucontrol",
+  },
+  "custom/sep": {
+    "format": "|",
+    "tooltip": false,
+  },
+  "custom/power": {
+    "tooltip": false,
+    "on-click": "wlogout -p layer-shell &",
+    "format": "⏻",
+  },
+  "custom/notification": {
+    "escape": true,
+    "exec": "swaync-client -swb",
+    "exec-if": "which swaync-client",
+    "format": "{icon}",
+    "format-icons": {
+      "none": "󰅺",
+      "notification": "󰡟",
     },
-    "group/pill#right3": {
-        "modules": [
-            "custom/wallchange",
-            "custom/theme",
-            "custom/wbar",
-            "custom/cliphist",
-            "custom/hyde-menu",
-            "custom/power"
-        ],
-        "orientation": "inherit"
-    }
+    "on-click": "sleep 0.1 && swaync-client -t -sw",
+    "return-type": "json",
+    "tooltip": false,
+  },
 }
