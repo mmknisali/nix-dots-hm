@@ -1,4 +1,4 @@
-{ config, pkgs, ... } :
+{ config, pkgs, caelestia-shell, ... } :
 
 {
   home.username = "ali";
@@ -13,7 +13,7 @@
   home.file.".config/rofi".source = ./config/rofi;
   home.file.".config/starship.toml".source = ./config/starship/starship.toml;
   home.file.".config/uwsm".source = ./config/uwsm;
-  home.file.".config/waybar".source = ./config/waybar;
+  #home.file.".config/waybar".source = ./config/waybar;
   home.file.".config/zsh".source = ./config/zsh;
 
 
@@ -34,6 +34,14 @@
   programs.starship = {
   enable = true;
 };
+
+  imports = [caelestia-shell.homeManagerModules.default];
+  
+  programs.caelestia = {
+    enable = true;
+    cli.enable = true;
+
+  };
 
 }
 

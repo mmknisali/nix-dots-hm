@@ -97,7 +97,7 @@
   users.users.ali = {
     isNormalUser = true;
     description = "ali";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "input" ];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -138,8 +138,13 @@
     playerctl
     wlogout
     blueman
+    tailscale
     ];
 
+    #eenable tailscale
+    services.tailscale.enable = true;
+    
+    
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
