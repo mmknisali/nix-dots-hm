@@ -41,7 +41,7 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    withUWSM = true;
+    # withUWSM = true;
   };
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -57,6 +57,42 @@
     LC_TELEPHONE = "tr_TR.UTF-8";
     LC_TIME = "tr_TR.UTF-8";
   };
+
+  # NVIDIA Graphics
+  hardware.graphics.enable = true;
+
+  services.xserver.videoDrivers = [
+    "modesetting"  # Intel iGPU
+    "nvidia"
+  ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    open = false;  # Proprietary modules for Maxwell (MX110)
+    
+    # PRIME Sync for hybrid graphics
+    prime = {
+      sync.enable = true;
+      intelBusId = "PCI:0@0:2:0";
+      nvidiaBusId = "PCI:0@2:0:0";
+    };
+  };
+
+  # Wayland/NVIDIA environment variables  
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    LIBVA_DRIVER_NAME = "nvidia";
+  };
+
+  # Kernel parameters
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+  ];
+
 
   # Enable the X11 windowing system.
  # services.xserver.enable = true;
