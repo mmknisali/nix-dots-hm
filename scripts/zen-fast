@@ -1,2 +1,7 @@
 #!/usr/bin/env zsh
-exec zen-twilight --disable-gpu --no-sandbox --disable-features=VaapiVideoDecoder "$@"
+export MOZ_ENABLE_WAYLAND=1
+export MOZ_DUMP_OFFSCREEN_FRAMES=0
+export gfx.webrender.all=1
+export gfx.use.gpu.processing=1
+
+exec zen-twilight --no-sandbox "$@"
