@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+ZENBIN=~/.local/bin/zen-twilight
+PIDFILE=~/.cache/zen-browser.pid
+
+if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+    hyprctl dispatch focuswindoworpeer "zen" 2>/dev/null || hyprctl dispatch workspace 1
+    exit 0
+fi
+
+$ZENBIN --disable-gpu --no-sandbox &
+echo $! > "$PIDFILE"

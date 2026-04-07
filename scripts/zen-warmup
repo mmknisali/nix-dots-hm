@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+ZENBIN=~/.local/bin/zen-twilight
+
+if pgrep -f "zen-twilight" > /dev/null 2>&1; then
+    exit 0
+fi
+
+$ZENBIN --disable-gpu --no-sandbox &

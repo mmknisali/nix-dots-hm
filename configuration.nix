@@ -180,6 +180,7 @@
     polkit_gnome
     cliphist
     wl-clipboard
+    preload
     (inputs.zen-browser.packages.x86_64-linux.twilight)
     ];
 

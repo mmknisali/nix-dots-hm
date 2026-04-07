@@ -28,6 +28,16 @@ home.packages = with pkgs; [
     executable = true;
   };
 
+  home.file.".local/bin/zen-warmup" = {
+    source = ./scripts/zen-warmup;
+    executable = true;
+  };
+
+  home.file.".local/bin/zen-launch" = {
+    source = ./scripts/zen-launch;
+    executable = true;
+  };
+
   home.file.".local/bin/cliphist" = {
     source = ./scripts/cliphist.sh;
     executable = true;
