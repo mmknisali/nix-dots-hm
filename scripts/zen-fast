@@ -1,7 +1,10 @@
 #!/usr/bin/env zsh
 export MOZ_ENABLE_WAYLAND=1
-export MOZ_DUMP_OFFSCREEN_FRAMES=0
-export gfx.webrender.all=1
-export gfx.use.gpu.processing=1
 
-exec zen-twilight --no-sandbox "$@"
+if [ -d /proc/driver/nvidia ]; then
+    export gfx.webrender.all=1
+    export gfx.use.gpu.processing=1
+    exec zen-twilight --no-sandbox "$@"
+else
+    exec zen-twilight --no-sandbox --disable-gpu --disable-software-rasterizer "$@"
+fi
