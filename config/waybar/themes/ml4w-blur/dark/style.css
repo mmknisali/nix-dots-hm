@@ -6,10 +6,20 @@
 @define-color textcolor1 #cdd6f4;
 @define-color textcolor2 #a6adc8;
 @define-color textcolor3 #bac2de;
-@define-color iconcolor #a6adc8;
+@define-color iconcolor #89b4fa;
 
 @import '../style.css';
 
 window#waybar {
-    background-color: rgba(30, 30, 46, 0.0);
+    background-color: rgba(30, 30, 46, 0.7);
+    font-family: "JetBrainsMono Nerd Font", "Fira Sans Semibold", FontAwesome, sans-serif;
+}
+
+#workspaces button {
+    min-width: 32px;
+    padding: 0 8px;
+}
+
+#clock, #cpu, #memory, #battery, #network, #pulseaudio {
+    padding: 0 12px;
 }

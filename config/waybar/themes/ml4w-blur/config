@@ -4,7 +4,7 @@
     "margin-bottom": 0,
     "margin-left": 0,
     "margin-right": 0,    
-    "spacing": 0,
+    "spacing": 4,
 
     "include": [
         "~/.config/waybar/modules.json"
@@ -29,21 +29,29 @@
     ],
 
     "clock": {
-        "format": "{:%H:%M}"
+        "format": "󰱒 {:%H:%M}",
+        "format-alt": "󰱒 {:%a %b %d}"
     },
     "cpu": {
-        "format": "{usage}%"
+        "format": "󰘚 {}%"
     },
     "memory": {
-        "format": "{}%"
+        "format": "󰍔 {}%"
     },
     "battery": {
-        "format": "{capacity}%"
+        "format": "󰁹 {}%",
+        "format-charging": "󰂄 {}%",
+        "format-plugged": "󰂄 {}%"
     },
     "network": {
-        "format-wifi": "{essid}"
+        "format-wifi": "󰤨 {essid} ",
+        "format-ethernet": "󰈀 "
     },
     "pulseaudio": {
-        "format": "{volume}%"
+        "format": "󰝚 {volume}%",
+        "format-muted": "󰝞 {volume}%"
+    },
+    "tray": {
+        "spacing": 8
     }
 }
