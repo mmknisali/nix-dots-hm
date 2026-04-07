@@ -1,25 +1,10 @@
-{ config, pkgs, caelestia-shell, inputs, ... } :
+{ config, pkgs, caelestia-shell, ... } :
 
 {
   home.username = "ali";
   home.homeDirectory = "/home/ali";
   home.stateVersion = "25.05";
   nixpkgs.config.allowUnfree = true;
-
-  imports = [
-    inputs.zen-browser.homeModules.twilight
-  ];
-
-  programs.zen-browser = {
-    enable = true;
-    setAsDefaultBrowser = true;
-    policies = {
-      DisableAppUpdate = true;
-      DisableTelemetry = true;
-      DisableFirefoxStudies = true;
-      DisableFeedbackCommands = true;
-    };
-  };
 
 #home manager packages
 home.packages = with pkgs; [

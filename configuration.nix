@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
@@ -180,6 +180,7 @@
     polkit_gnome
     cliphist
     wl-clipboard
+    (inputs.zen-browser.packages.x86_64-linux.twilight)
     ];
 
     #eenable tailscale

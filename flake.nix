@@ -14,7 +14,7 @@
 	  };
 	};
 
-	outputs = { self, nixpkgs, home-manager, zen-browser }: {
+	outputs = { self, nixpkgs, home-manager, zen-browser, ... }: {
 	  nixosConfigurations.clara = nixpkgs.lib.nixosSystem {
 	    system = "x86_64-linux";
 	    modules = [
@@ -24,9 +24,7 @@
 	        home-manager = {
 			  useGlobalPkgs = true;
 			  useUserPackages = true;
-			  users.ali = import ./home.nix {
-			    inherit inputs;
-			  };
+			  users.ali = import ./home.nix;
 			  backupFileExtension = "backup";
 	        };
 	      }
