@@ -20,11 +20,28 @@ home.packages = with pkgs; [
   home.file.".config/rofi".source = ./config/rofi;
   home.file.".config/starship.toml".source = ./config/starship/starship.toml;
   #home.file.".config/uwsm".source = ./config/uwsm;
-  #home.file.".config/waybar".source = ./config/waybar;
+  home.file.".config/waybar".source = ./config/waybar;
   home.file.".config/zsh".source = ./config/zsh;
 
+  home.file.".local/bin/cliphist" = {
+    source = ./scripts/cliphist.sh;
+    executable = true;
+  };
 
-  #install zsh and configure
+  # Waybar scripts
+  home.file.".local/bin/waybar-launch" = {
+    source = ./config/waybar/launch.sh;
+    executable = true;
+  };
+  home.file.".local/bin/waybar-toggle" = {
+    source = ./config/waybar/toggle.sh;
+    executable = true;
+  };
+  home.file.".local/bin/waybar-themeswitcher" = {
+    source = ./config/waybar/themeswitcher.sh;
+    executable = true;
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -42,13 +59,12 @@ home.packages = with pkgs; [
   enable = true;
 };
 
-  imports = [caelestia-shell.homeManagerModules.default];
+  # imports = [caelestia-shell.homeManagerModules.default];
   
-  programs.caelestia = {
-    enable = true;
-    cli.enable = true;
-
-  };
+  # programs.caelestia = {
+  #   enable = true;
+  #   cli.enable = true;
+  # };
 
   wayland.windowManager.hyprland.settings = {
    decoration = {

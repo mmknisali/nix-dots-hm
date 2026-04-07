@@ -14,3 +14,8 @@
 for file in "${ZDOTDIR:-$HOME/.config/zsh}/conf.d/"*.zsh; do
   [ -r "$file" ] && source "$file"
 done
+
+# Start Hyprland if not already running (for autologin)
+if [ -z "$HYPRLAND_INSTANCE_SIGNAL" ]; then
+    exec Hyprland
+fi

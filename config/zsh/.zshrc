@@ -51,8 +51,3 @@ export PATH=/home/ali/.opencode/bin:$PATH
 export PATH=$PATH:/home/ali/.spicetify
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
-
-# Start Hyprland if not already running
-if [ -z "$HYPRLAND_INSTANCE_SIGNAL" ]; then
-    exec Hyprland
-fi

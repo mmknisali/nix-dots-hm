@@ -36,6 +36,7 @@
   fonts.packages = with pkgs; [
   lexend
   nerd-fonts.jetbrains-mono
+  nerd-fonts.symbols-only
   ];
 
   programs.hyprland = {
@@ -75,8 +76,8 @@
     # PRIME Sync for hybrid graphics
     prime = {
       sync.enable = true;
-      intelBusId = "PCI:0@0:2:0";
-      nvidiaBusId = "PCI:0@2:0:0";
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:2:0:0";
     };
   };
 
@@ -132,6 +133,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ali = {
     isNormalUser = true;
+    hashedPassword = "$y$j9T$SrFGf/IANp31e26ZiPQ2o0$UaQ1ruggDowaDrOtVN674gPkx.XqyWAEsfp7.UbJ1wA";
     description = "ali";
     extraGroups = [ "networkmanager" "wheel" "input" ];
     packages = with pkgs; [
@@ -175,6 +177,9 @@
     wlogout
     blueman
     tailscale
+    polkit_gnome
+    cliphist
+    wl-clipboard
     ];
 
     #eenable tailscale
