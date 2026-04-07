@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+exec zen-twilight --disable-gpu --no-sandbox --disable-features=VaapiVideoDecoder "$@"

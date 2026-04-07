@@ -23,6 +23,11 @@ home.packages = with pkgs; [
   home.file.".config/waybar".source = ./config/waybar;
   home.file.".config/zsh".source = ./config/zsh;
 
+  home.file.".local/bin/zen-twilight" = {
+    source = ./scripts/zen-fast;
+    executable = true;
+  };
+
   home.file.".local/bin/cliphist" = {
     source = ./scripts/cliphist.sh;
     executable = true;
