@@ -87,9 +87,9 @@
     // Cliphist
     "custom/cliphist": {
         "format": "",
-        "on-click": "sleep 0.1 && ~/dotfiles/scripts/cliphist.sh",
-        "on-click-right": "sleep 0.1 && ~/dotfiles/scripts/cliphist.sh d",
-        "on-click-middle": "sleep 0.1 && ~/dotfiles/scripts/cliphist.sh w",
+        "on-click": "sleep 0.1 && ~/.local/bin/cliphist",
+        "on-click-right": "sleep 0.1 && ~/.local/bin/cliphist d",
+        "on-click-middle": "sleep 0.1 && ~/.local/bin/cliphist w",
         "tooltip-format": "Clipboard Manager"
     },
 
