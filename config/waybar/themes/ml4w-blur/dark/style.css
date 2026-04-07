@@ -11,5 +11,5 @@
 @import '../style.css';
 
 window#waybar {
-    background-color: rgba(30, 30, 46, 0.8);
+    background-color: rgba(30, 30, 46, 0.0);
 }
