@@ -24,7 +24,7 @@ sleep 0.2
 # ----------------------------------------------------- 
 # Default theme: /THEMEFOLDER;/VARIATION
 # ----------------------------------------------------- 
-themestyle="/ml4w-blur;/ml4w-blur/dark"
+themestyle="/ml4w-blur-bottom;/ml4w-blur-bottom/dark"
 
 # ----------------------------------------------------- 
 # Get current theme information from .cache/.themestyle.sh
