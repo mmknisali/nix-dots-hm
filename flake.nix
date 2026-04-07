@@ -14,7 +14,7 @@
 	  };
 	};
 
-	outputs = { self, nixpkgs, home-manager, zen-browser, ... }: {
+	outputs = { self, nixpkgs, home-manager, zen-browser, ... }@inputs: {
 	  nixosConfigurations.clara = nixpkgs.lib.nixosSystem {
 	    system = "x86_64-linux";
 	    modules = [
@@ -29,6 +29,7 @@
 	        };
 	      }
 	    ];
+	    specialArgs = { inherit inputs; };
 	  };
 	};
 
