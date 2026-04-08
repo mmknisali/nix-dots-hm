@@ -189,10 +189,6 @@
     (inputs.devenv.packages.x86_64-linux.default)
     direnv
     eza
-    sddm
-    qtdeclarative
-    qtquickcontrols2
-    qtsvg
     hyprlock
     (pkgs.stdenv.mkDerivation {
       name = "pixie-sddm";
