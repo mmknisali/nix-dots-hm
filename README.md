@@ -1,20 +1,21 @@
 # NixOS Hyprland Dotfiles
 
-A NixOS configuration using Hyprland (Wayland) with Home Manager, featuring the caelestia-shell desktop environment.
+A NixOS configuration using Hyprland (Wayland) with Home Manager.
 
 ![Hyprland](https://img.shields.io/badge/WM-Hyprland-blue)
-![Shell](https://img.shields.io/badge/Shell-caelestia--shell-purple)
 ![Platform](https://img.shields.io/badge/Platform-NixOS-green)
 
 ## Overview
 
 This repository contains my NixOS system configuration with:
 - **Window Manager**: Hyprland (Wayland compositor)
-- **Desktop Shell**: caelestia-shell (Quickshell-based)
-- **Shell**: Zsh with Oh-My-Zsh via HyDE
-- **Status Bar**: caelestia-shell's built-in bar (no waybar)
+- **Status Bar**: waybar
+- **Shell**: Zsh with HyDE
 - **Terminal**: Kitty
 - **Editor**: Neovim (LazyVim config)
+- **Browser**: Zen Browser (twilight)
+- **Login**: SDDM with pixie-sddm theme
+- **Lock Screen**: Hyprlock-Dots (Layout 1)
 
 ## Hardware
 
@@ -76,7 +77,9 @@ The system is configured with:
     │   ├── userprefs.conf
     │   └── windowrules.conf
     ├── hyprlock/         # Hyprlock screen locker (Hyprlock-Dots)
+    │   ├── hyprlock.conf   # Main config (loads layout)
     │   ├── layouts/      # Lock screen layouts
+    │   │   └── layout1.conf
     │   ├── colors.conf   # Color definitions
     │   └── scripts/      # Widget scripts
     ├── kitty/            # Terminal emulator
@@ -96,7 +99,8 @@ The system is configured with:
 
 - **Theme**: pixie-sddm (Google Pixel UI inspired)
 - **Qt6**: Modern Qt6 support
-- **Wallpaper**: Dynamic backgrounds from wallpapers folder
+- **Wayland**: Enabled for native Wayland sessions
+- **Auto-login**: Disabled (password required)
 
 ### Hyprlock Screen Locker
 
@@ -111,28 +115,13 @@ The system is configured with:
 - Full Wayland support with GBM backend
 - Kernel mode setting enabled
 
-### SDDM
-
-- **Display Manager**: SDDM with Wayland support
-- **Theme**: pixie-sddm (Material Design 3 inspired)
-- **Auto-login**: Disabled (password required)
-
 ### Hyprland
 
 - XWayland enabled for X11 apps
 - Custom keybindings (see `config/hypr/keybindings.conf`)
 - Window rules for common apps
 - Multi-monitor support
-
-### Caelestia-Shell
-
-The desktop shell provides:
-- **Bar**: Built-in Quickshell-based status bar
-- **Launcher**: Application launcher (Super+A)
-- **Dashboard**: System overview (Super+D)
-- **Notifications**: Integrated notification center
-- **Wallpaper Switcher**: Via launcher
-- **Idle Management**: Lock/suspend/hibernate timeouts
+- Blur effects enabled
 
 ### Shell (Zsh)
 
@@ -140,7 +129,7 @@ The desktop shell provides:
 - Oh-My-Zsh via HyDE
 - Zsh syntax highlighting
 - Zsh autosuggestions
-- FZF integration
+- direnv integration
 
 ## Keybindings
 
@@ -165,11 +154,11 @@ The desktop shell provides:
 | Key | Action |
 |-----|--------|
 | `Super + T` | Terminal (Kitty) |
-| `Super + B` | Browser (Firefox) |
+| `Super + B` | Browser (Zen Browser) |
 | `Super + A` | Launcher (Rofi) |
 | `Super + Tab` | Window switcher (Rofi) |
 | `Super + M` | Music player |
-| `Super + L` | Lock screen (hyprlock) |
+| `Super + L` | Lock screen (Hyprlock-Dots) |
 
 ### Media Keys
 
@@ -184,14 +173,6 @@ The desktop shell provides:
 | `XF86MonBrightnessUp` | Brightness up |
 | `XF86MonBrightnessDown` | Brightness down |
 
-### Caelestia-Shell Shortcuts
-
-| Key | Action |
-|-----|--------|
-| `Super + D` | Open dashboard |
-| `Super + A` | Open launcher |
-| `Super + N` | Open notifications |
-
 ## Packages
 
 ### System Packages
@@ -204,16 +185,21 @@ The desktop shell provides:
 - `neovim` - Text editor
 - `kitty` - Terminal emulator
 - `starship` - Shell prompt
-- `uwsm` - Window stack manager (installed but not used)
+- `uwsm` - Window stack manager
 - `rofi` - Application launcher
 - `swaynotificationcenter` - Notification daemon
 - `playerctl` - Media player control
 - `wlogout` - Logout screen
 - `blueman` - Bluetooth manager
 - `tailscale` - VPN client
-- `firefox` - Web browser
-- `sddm` - Simple Desktop Display Manager
+- `polkit-gnome` - Authentication agent
+- `cliphist` - Clipboard manager
+- `wl-clipboard` - Wayland clipboard
+- `direnv` - Environment variable manager
+- `eza` - Modern ls replacement
 - `hyprlock` - Screen locker
+- `sddm` - Simple Desktop Display Manager
+- `zen-browser` - Web browser (twilight edition)
 
 ### Home Manager Packages
 
@@ -232,6 +218,7 @@ Key environment variables set:
 | `__GLX_VENDOR_LIBRARY_NAME` | `nvidia` | Use NVIDIA GLX |
 | `LIBVA_DRIVER_NAME` | `nvidia` | NVIDIA VA-API |
 | `XDG_SESSION_TYPE` | `wayland` | Wayland session |
+| `WLR_NO_HARDWARE_CURSORS` | `1` | Fix invisible mouse on NVIDIA |
 
 ## Troubleshooting
 
@@ -252,23 +239,6 @@ lspci -D -d ::03xx
 3. Check NVIDIA kernel modules:
 ```bash
 lsmod | grep nvidia
-```
-
-### Caelestia-Shell Not Starting
-
-1. Check if caelestia is installed:
-```bash
-which caelestia
-```
-
-2. Check Hyprland logs:
-```bash
-tail -f ~/.hyprland.log
-```
-
-3. Try starting manually:
-```bash
-caelestia shell -d
 ```
 
 ### Audio Issues
@@ -294,6 +264,23 @@ hardware.nvidia.forceFullCompositionPipeline = true;
 ```
 
 Add to `configuration.nix` and rebuild.
+
+### Hyprlock Not Working
+
+1. Check hyprlock config:
+```bash
+cat ~/.config/hyprlock/hyprlock.conf
+```
+
+2. Test hyprlock:
+```bash
+hyprlock
+```
+
+3. Check logs:
+```bash
+tail -f ~/.hyprlock.log
+```
 
 ## Maintenance
 
