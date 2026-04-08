@@ -1,6 +1,8 @@
 {
 	description = "Hyprland nixos";
 
+  inputs.devenv.url = "github:cachix/devenv/9e5c17caf0ead1bb29d430d4c0a26a77bc5d374b";
+  
 	inputs = {
 	  nixpkgs.url = "nixpkgs/nixos-unstable";
 	  home-manager = {
@@ -8,7 +10,7 @@
 	    inputs.nixpkgs.follows = "nixpkgs";
 	  };
 	  zen-browser = {
-	    url = "github:0xc000022070/zen-browser-flake";
+	    url = "github:tstachl/zen-browser-flake";
 	    inputs.nixpkgs.follows = "nixpkgs";
 	    inputs.home-manager.follows = "home-manager";
 	  };

@@ -181,6 +181,9 @@
     cliphist
     wl-clipboard
     (inputs.zen-browser.packages.x86_64-linux.twilight)
+    (inputs.devenv.packages.x86_64-linux.default)
+    direnv
+    eza 
     ];
 
     #eenable tailscale

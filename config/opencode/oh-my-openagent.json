@@ -1,0 +1,34 @@
+{
+  "agents": {
+    "sisyphus": {
+      "model": "opencode/claude-opus-4-6"
+    },
+    "oracle": {
+      "model": "opencode/gpt-5.4"
+    },
+    "explore": {
+      "model": "opencode/minimax-m2.7"
+    },
+    "librarian": {
+      "model": "opencode/minimax-m2.7"
+    },
+    "prometheus": {
+      "model": "opencode/claude-opus-4-6"
+    },
+    "atlas": {
+      "model": "opencode/claude-opus-4-6"
+    },
+    "metis": {
+      "model": "opencode/claude-opus-4-6"
+    },
+    "hephaestus": {
+      "model": "opencode/gpt-5.4"
+    },
+    "momus": {
+      "model": "opencode/gpt-5.4"
+    },
+    "multimodal-looker": {
+      "model": "opencode/gpt-5.4"
+    }
+  }
+}
