@@ -195,7 +195,7 @@
         owner = "xCaptaiN09";
         repo = "pixie-sddm";
         rev = "main";
-        sha256 = "sha256-UUi7ylVeuvd72QVzczV09qCpnd2dxuSgKfrpWpL7AEY=";
+        sha256 = "sha256-NkjWP/y3kLRjYM0Wr3l7ndbMx3XYxQFXy07C28vrUSU=";
       };
       installPhase = ''
         mkdir -p $out/share/sddm/themes/pixie
