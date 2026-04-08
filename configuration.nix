@@ -29,14 +29,19 @@
 
   # Set your time zone.
   time.timeZone = "Europe/Istanbul";
-  
-  services.getty.autologinUser = "ali";
+
+  # SDDM configuration
+  services.xserver.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
+  services.displayManager.sddm.theme = "pixie";
 
   #fonts for icons and waybar
   fonts.packages = with pkgs; [
   lexend
   nerd-fonts.jetbrains-mono
   nerd-fonts.symbols-only
+  alfa-slaby
   ];
 
   programs.hyprland = {
@@ -183,7 +188,25 @@
     (inputs.zen-browser.packages.x86_64-linux.twilight)
     (inputs.devenv.packages.x86_64-linux.default)
     direnv
-    eza 
+    eza
+    sddm
+    qtdeclarative
+    qtquickcontrols2
+    qtsvg
+    hyprlock
+    (pkgs.stdenv.mkDerivation {
+      name = "pixie-sddm";
+      src = pkgs.fetchFromGitHub {
+        owner = "xCaptaiN09";
+        repo = "pixie-sddm";
+        rev = "main";
+        sha256 = "sha256-UUi7ylVeuvd72QVzczV09qCpnd2dxuSgKfrpWpL7AEY=";
+      };
+      installPhase = ''
+        mkdir -p $out/share/sddm/themes/pixie
+        cp -r * $out/share/sddm/themes/pixie/
+      '';
+    })
     ];
 
     #eenable tailscale

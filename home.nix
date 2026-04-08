@@ -22,6 +22,14 @@ home.packages = with pkgs; [
   #home.file.".config/uwsm".source = ./config/uwsm;
   home.file.".config/waybar".source = ./config/waybar;
   home.file.".config/zsh".source = ./config/zsh;
+  home.file.".config/hyprlock" = {
+    source = ./config/hyprlock;
+    recursive = true;
+  };
+  home.file.".config/hyprlock/scripts/battery.sh" = {
+    source = ./config/hyprlock/scripts/battery.sh;
+    executable = true;
+  };
 
   home.file.".local/bin/zen-twilight" = {
     source = ./scripts/zen-fast;
