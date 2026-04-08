@@ -47,7 +47,7 @@ nix flake update
 
 3. Rebuild the system:
 ```bash
-sudo nixos-rebuild switch --flake .#hyprland-btw
+sudo nixos-rebuild switch --flake .#clara
 ```
 
 4. Reboot
@@ -55,9 +55,9 @@ sudo nixos-rebuild switch --flake .#hyprland-btw
 ### Post-Installation
 
 The system is configured with:
-- **Auto-login**: User `ali` auto-logs in via getty
-- **Auto-start Hyprland**: Launches automatically on zsh login
-- **caelestia-shell**: Auto-starts with Hyprland via `exec-once`
+- **Login**: SDDM with pixie-sddm theme (graphical login)
+- **Auto-start Hyprland**: Launches automatically via SDDM
+- **Lock Screen**: Hyprlock-Dots (Layout 1)
 
 ## Configuration Structure
 
@@ -67,6 +67,7 @@ The system is configured with:
 ├── home.nix              # Home Manager user configuration
 ├── flake.nix             # Nix flake definition
 ├── hardware-configuration.nix  # Hardware-specific NixOS config
+├── wallpapers/           # Wallpaper images
 └── config/               # User configuration files
     ├── hypr/             # Hyprland window manager
     │   ├── hyprland.conf # Main config (sources other files)
@@ -74,11 +75,15 @@ The system is configured with:
     │   ├── monitors.conf
     │   ├── userprefs.conf
     │   └── windowrules.conf
+    ├── hyprlock/         # Hyprlock screen locker (Hyprlock-Dots)
+    │   ├── layouts/      # Lock screen layouts
+    │   ├── colors.conf   # Color definitions
+    │   └── scripts/      # Widget scripts
     ├── kitty/            # Terminal emulator
     ├── nvim/             # Neovim (LazyVim)
     ├── rofi/             # Application launcher
     ├── starship/         # Shell prompt
-    ├── waybar/           # Status bar (not in use)
+    ├── waybar/           # Status bar
     └── zsh/              # Zsh configuration
         ├── .zshrc        # Main zshrc (loads hyde)
         ├── .zshenv       # Environment variables
@@ -87,12 +92,30 @@ The system is configured with:
 
 ## Features
 
+### SDDM Login Screen
+
+- **Theme**: pixie-sddm (Google Pixel UI inspired)
+- **Qt6**: Modern Qt6 support
+- **Wallpaper**: Dynamic backgrounds from wallpapers folder
+
+### Hyprlock Screen Locker
+
+- **Theme**: Hyprlock-Dots (Layout 1)
+- **Widgets**: Time, date, battery indicator
+- **Wallpaper**: Uses system wallpaper with blur effects
+
 ### NVIDIA GPU Support
 
 - PRIME Sync mode (NVIDIA dGPU + Intel iGPU)
 - Proprietary NVIDIA drivers
 - Full Wayland support with GBM backend
 - Kernel mode setting enabled
+
+### SDDM
+
+- **Display Manager**: SDDM with Wayland support
+- **Theme**: pixie-sddm (Material Design 3 inspired)
+- **Auto-login**: Disabled (password required)
 
 ### Hyprland
 
@@ -177,7 +200,7 @@ The desktop shell provides:
 - `wget` - Download utility
 - `git` - Version control
 - `hyprpaper` - Wallpaper daemon
-- `waybar` - Status bar (installed but not used)
+- `waybar` - Status bar
 - `neovim` - Text editor
 - `kitty` - Terminal emulator
 - `starship` - Shell prompt
@@ -189,6 +212,8 @@ The desktop shell provides:
 - `blueman` - Bluetooth manager
 - `tailscale` - VPN client
 - `firefox` - Web browser
+- `sddm` - Simple Desktop Display Manager
+- `hyprlock` - Screen locker
 
 ### Home Manager Packages
 
@@ -279,7 +304,7 @@ Add to `configuration.nix` and rebuild.
 nix flake update
 
 # Rebuild
-sudo nixos-rebuild switch --flake .#hyprland-btw
+sudo nixos-rebuild switch --flake .#clara
 ```
 
 ### Update Home Manager
@@ -302,7 +327,6 @@ This is a personal dotfiles repository. Feel free to:
 ## Credits
 
 - [Hyprland](https://hyprland.org) - Window manager
-- [caelestia-shell](https://github.com/caelestia-dots/shell) - Desktop shell
-- [HyDE](https://github.com/HyDE-Project/HyDE) - Zsh configuration
-- [LazyVim](https://www.lazyvim.org) - Neovim configuration
+- [pixie-sddm](https://github.com/xCaptaiN09/pixie-sddm) - SDDM theme
+- [Hyprlock-Dots](https://github.com/mahaveergurjar/Hyprlock-Dots) - Hyprlock configuration
 - [NixOS](https://nixos.org) - Operating system
