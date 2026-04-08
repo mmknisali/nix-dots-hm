@@ -26,10 +26,6 @@ home.packages = with pkgs; [
     source = ./config/hyprlock;
     recursive = true;
   };
-  home.file.".config/hyprlock/scripts/battery.sh" = {
-    source = ./config/hyprlock/scripts/battery.sh;
-    executable = true;
-  };
 
   home.file.".local/bin/zen-twilight" = {
     source = ./scripts/zen-fast;
