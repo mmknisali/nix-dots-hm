@@ -329,4 +329,5 @@ This is a personal dotfiles repository. Feel free to:
 - [Hyprland](https://hyprland.org) - Window manager
 - [pixie-sddm](https://github.com/xCaptaiN09/pixie-sddm) - SDDM theme
 - [Hyprlock-Dots](https://github.com/mahaveergurjar/Hyprlock-Dots) - Hyprlock configuration
+- [LazyVim](https://www.lazyvim.org) - Neovim configuration
 - [NixOS](https://nixos.org) - Operating system
