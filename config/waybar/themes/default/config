@@ -43,7 +43,7 @@
     // Waybar Themes
     "custom/waybarthemes": {
         "format": "Themes",
-        "on-click": "~/dotfiles/waybar/themeswitcher.sh",
+        "on-click": "~/.local/bin/waybar-themeswitcher",
         "tooltip": false
     },
     "sway/mode": {

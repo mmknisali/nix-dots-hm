@@ -131,6 +131,17 @@ The system is configured with:
 - Zsh autosuggestions
 - direnv integration
 
+### Waybar Theme Switcher
+
+A theme switcher is built into waybar with multiple themes to choose from.
+
+- **Keybinding**: `Super + Ctrl + T` - Open theme switcher (Rofi menu)
+- **Click**: Click the theme icon in waybar to open theme switcher
+
+Available themes include: ML4W Light/Dark/Mixed/Colored, ML4W Blur, ML4W Blur Bottom, ML4W Minimal, and more.
+
+The theme switcher stores your selection in `~/.cache/.themestyle.sh` and waybar automatically reloads with the new theme.
+
 ## Keybindings
 
 ### Main Modifiers
