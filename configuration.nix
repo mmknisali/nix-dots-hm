@@ -64,18 +64,27 @@
   };
 
   # NVIDIA Graphics
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      libglvnd
+      intel-media-driver
+      vulkan-loader
+      nvidia-vaapi-driver
+      mangohud
+      gamemode
+    ];
+  };
 
-  services.xserver.videoDrivers = [
-    "modesetting"  # Intel iGPU
-    "nvidia"
-  ];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
-    powerManagement.enable = true;
+    powerManagement.enable = false;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    open = false;  # Proprietary modules for Maxwell (MX110)
+    open = false;
+    nvidiaSettings = true;
     
     # PRIME Sync for hybrid graphics
     prime = {
@@ -91,12 +100,17 @@
     GBM_BACKEND = "nvidia-drm";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     LIBVA_DRIVER_NAME = "nvidia";
+    MANGOHUD = "1";
+    ENABLE_GAMEMODE = "1";
   };
 
   # Kernel parameters
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
   ];
+
+  # Load NVIDIA modules at boot
+  boot.kernelModules = [ "nvidia" "nvidia-drm" "nvidia-modeset" ];
 
 
   # Enable the X11 windowing system.
@@ -189,6 +203,9 @@
     direnv
     eza
     hyprlock
+    docker
+    docker-compose
+    gamemode
     (pkgs.stdenv.mkDerivation {
       name = "pixie-sddm";
       src = pkgs.fetchFromGitHub {
@@ -207,6 +224,8 @@
     #eenable tailscale
     services.tailscale.enable = true;
     
+  #enable nix ld 
+  programs.nix-ld.enable = true;
     
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
