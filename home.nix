@@ -33,6 +33,7 @@ home.packages = with pkgs; [
 
   home.file = {
     "Pictures/wallpapers/winter-16.png".source = ./wallpapers/winter-16.png;
+    "Pictures/wallpapers/profile.jpeg".source = ./wallpapers/profile.jpeg;
   };
 
   home.file.".local/bin/zen-warmup" = {
