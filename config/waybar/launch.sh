@@ -37,24 +37,24 @@ else
 fi
 
 IFS=';' read -ra arrThemes <<< "$themestyle"
-echo ":: Theme: ${arrThemes[0]}"
+echo ":: Theme: ${arrThemes[0]} - ${arrThemes[1]}"
 
-if [ ! -f $HOME/.config/waybar/themes${arrThemes[1]}/style.css ]; then
-    themestyle="/ml4w;/ml4w/light"
+theme_config="$HOME/.config/waybar/themes/${arrThemes[0]}/config"
+theme_style="$HOME/.config/waybar/themes/${arrThemes[1]}/style.css"
+
+if [ ! -f "$theme_style" ]; then
+    themestyle="/ml4w-blur-bottom;/ml4w-blur-bottom/dark"
+    IFS=';' read -ra arrThemes <<< "$themestyle"
+    theme_config="$HOME/.config/waybar/themes/${arrThemes[0]}/config"
+    theme_style="$HOME/.config/waybar/themes/${arrThemes[1]}/style.css"
 fi
 
-# ----------------------------------------------------- 
-# Loading the configuration
-# ----------------------------------------------------- 
-config_file="config"
-style_file="style.css"
-
-# Standard files can be overwritten with an existing config-custom or style-custom.css
-if [ -f $HOME/.config/waybar/themes${arrThemes[0]}/config-custom ] ;then
-    config_file="config-custom"
-fi
-if [ -f $HOME/.config/waybar/themes${arrThemes[1]}/style-custom.css ] ;then
-    style_file="style-custom.css"
+if [ ! -f "$theme_config" ]; then
+    theme_config="$HOME/.config/waybar/themes/${arrThemes[0]}/config-custom"
 fi
 
-waybar -c $HOME/.config/waybar/themes${arrThemes[0]}/$config_file -s $HOME/.config/waybar/themes${arrThemes[1]}/$style_file &
+if [ -f "$HOME/.config/waybar/themes/${arrThemes[1]}/style-custom.css" ]; then
+    theme_style="$HOME/.config/waybar/themes/${arrThemes[1]}/style-custom.css"
+fi
+
+waybar -c "$theme_config" -s "$theme_style" &

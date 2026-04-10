@@ -58,42 +58,35 @@
 
     // Cliphist
     "custom/cliphist": {
-        "format": "",
-        "on-click": "sleep 0.1 && ~/dotfiles/scripts/cliphist.sh",
-        "on-click-right": "sleep 0.1 && ~/dotfiles/scripts/cliphist.sh d",
-        "on-click-middle": "sleep 0.1 && ~/dotfiles/scripts/cliphist.sh w",
+        "format": "󰅌",
+        "on-click": "sleep 0.1 && ~/.local/bin/cliphist",
+        "on-click-right": "sleep 0.1 && ~/.local/bin/cliphist d",
         "tooltip": false
     },
 
     // Hyprshade
     "custom/hyprshade": {
-        "format": "",
-        "on-click": "sleep 0.1; ~/dotfiles/hypr/scripts/hyprshade.sh",
-        "on-click-right": "sleep 0.1; ~/dotfiles/hypr/scripts/hyprshade.sh rofi",
+        "format": "󰷮",
         "tooltip": false
     },
 
     // Hypridle inhibitor
     "custom/hypridle": {
-        "format": "",
+        "format": "󰌾",
         "return-type": "json",
         "escape": true,
         "exec-on-event": true,
         "interval": 60,
-        "exec": "~/dotfiles/hypr/scripts/hypridle.sh status",
-        "on-click": "~/dotfiles/hypr/scripts/hypridle.sh toggle",
-        "on-click-right": "hyprlock"
+        "tooltip": false
     },
 
     // Updates Count
     "custom/updates": {
-        "format": "   {}",
-        "tooltip-format": "{}",
+        "format": "󰇚   {}",
         "escape": true,
         "return-type": "json",       
-        "exec": "~/dotfiles/scripts/updates.sh",
+        "exec": "echo '{\"text\": \"\"}'",
         "restart-interval": 60,
-        "on-click": "alacritty -e ~/dotfiles/scripts/installupdates.sh",
         "tooltip": false
     },
 
@@ -105,9 +98,8 @@
     
     // Wallpaper
     "custom/wallpaper": {
-        "format": "",
-        "on-click": "~/dotfiles/hypr/scripts/wallpaper.sh select",
-        "on-click-right": "~/dotfiles/hypr/scripts/wallpaper-effects.sh",
+        "format": "󰋼",
+        "on-click": "waypaper",
         "tooltip": false
     },
 
@@ -120,43 +112,39 @@
     
     // Settings
     "custom/settings": {
-        "format": "",
-        "on-click": "~/dotfiles/apps/ML4W_Dotfiles_Settings-x86_64.AppImage",
+        "format": "󰌘",
         "tooltip": false
     },
 
     // Keybindings
     "custom/keybindings": {
-        "format": "",
-        "on-click": "~/dotfiles/hypr/scripts/keybindings.sh",
+        "format": "󰌌",
         "tooltip": false
     },
 
     // Filemanager Launcher
     "custom/filemanager": {
-        "format": "",
+        "format": "󰝰",
         "on-click": "thunar",
         "tooltip": false
     },
 
     // Browser Launcher
     "custom/browser": {
-        "format": "",
-        "on-click": "~/dotfiles/.settings/browser.sh",
+        "format": "󰀝",
+        "on-click": "zen",
         "tooltip": false
     },    
 
     // ML4W Welcome App
     "custom/ml4w-welcome": {
-        "on-click": "~/dotfiles/apps/ML4W_Welcome-x86_64.AppImage",
         "format": " ",
         "tooltip": false
     },
 
     // ChatGPT Launcher
     "custom/chatgpt": {
-        "format": "",
-        "on-click": "chromium --app=https://chat.openai.com",
+        "format": "󰚩",
         "tooltip": false
     },
 
@@ -164,7 +152,6 @@
     "custom/appmenu": {
         "format": "Apps",
         "on-click": "rofi -show drun -replace",
-        "on-click-right": "~/dotfiles/hypr/scripts/keybindings.sh",
         "tooltip": false
     },
     

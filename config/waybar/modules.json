@@ -60,17 +60,14 @@
 
     // ML4W Welcome App
     "custom/ml4w-welcome": {
-        "on-click": "sleep 0.1 && ~/dotfiles/eww/ml4w-sidebar/launch.sh",
-        "on-click-right": "sleep 0.1 && ~/dotfiles/apps/ML4W_Welcome-x86_64.AppImage",
         "format": " ",
-        "tooltip-format": "Open Sidebar"
+        "tooltip": false
     },
 
     // ML4W Hyprland Settings App
     "custom/ml4w-hyprland-settings": {
-        "on-click": "~/dotfiles/apps/ML4W_Hyprland_Settings-x86_64.AppImage",
         "format": " ",
-        "tooltip-format": "ML4W Hyprland Settings"
+        "tooltip": false
     },
     
     // Empty
@@ -95,21 +92,18 @@
 
     // Updates Count
     "custom/updates": {
-        "format": "   {}",
+        "format": "󰇚   {}",
         "escape": true,
         "return-type": "json",       
-        "exec": "~/dotfiles/scripts/updates.sh",
-        "restart-interval": 60,
-        "on-click": "alacritty --class dotfiles-floating -e ~/dotfiles/scripts/installupdates.sh",
-        "on-click-right": "~/dotfiles/.settings/software.sh"
+        "exec": "echo '{\"text\": \"\"}'",
+        "restart-interval": 60
     },
     
     // Wallpaper
     "custom/wallpaper": {
-        "format": "",
+        "format": "󰋼",
         "on-click": "waypaper",
-        "on-click-right": "~/dotfiles/hypr/scripts/wallpaper-effects.sh",
-        "tooltip-format": "Left: Select a wallpaper\nRight: Select wallpaper effect"
+        "tooltip-format": "Change wallpaper"
     },
 
     // Waybar Themes
@@ -121,23 +115,20 @@
     
     // Settings
     "custom/settings": {
-        "format": "",
-        "on-click": "~/dotfiles/apps/ML4W_Dotfiles_Settings-x86_64.AppImage",
-        "tooltip-format": "ML4W Dotfiles Settings"
+        "format": "󰌘",
+        "tooltip": false
     },
 
     // Keybindings
     "custom/keybindings": {
-        "format": "",
-        "on-click": "~/dotfiles/hypr/scripts/keybindings.sh",
+        "format": "󰌌",
         "tooltip": false
     },
 
     // ChatGPT Launcher
     "custom/chatgpt": {
-        "format": " ",
-        "on-click": "~/dotfiles/.settings/ai.sh",
-        "tooltip-format": "AI Support"
+        "format": "󰚩",
+        "tooltip": false
     },
 
     // Calculator
@@ -149,27 +140,22 @@
 
     // Windows VM
     "custom/windowsvm": {
-        "format": "",
-        "on-click": "~/dotfiles/scripts/launchvm.sh",
+        "format": "󰀝",
         "tooltip": false
     },
 
     // Rofi Application Launcher
     "custom/appmenu": {
-        // START APPS LABEL
         "format": "Apps",
-        // END APPS LABEL
         "on-click": "sleep 0.2;rofi -show drun -replace",
-        "on-click-right": "~/dotfiles/hypr/scripts/keybindings.sh",
-        "tooltip-format": "Left: Open the application launcher\nRight: Show all keybindings"
+        "tooltip-format": "Open the application launcher"
     },
 
     // Rofi Application Launcher
     "custom/appmenuicon": {
-        "format": "",
+        "format": "󰀜",
         "on-click": "rofi -show drun -replace",
-        "on-click-right": "~/dotfiles/hypr/scripts/keybindings.sh",
-        "tooltip-format": "Left: Open the application launcher\nRight: Show all keybindings"
+        "tooltip-format": "Open the application launcher"
     },    
 
     // Power Menu
@@ -181,22 +167,18 @@
 
     // Hyprshade
     "custom/hyprshade": {
-        "format": "",
-        "tooltip-format": "Toggle Screen Shader",
-        "on-click": "sleep 0.5; ~/dotfiles/hypr/scripts/hyprshade.sh",
-        "on-click-right": "sleep 0.5; ~/dotfiles/hypr/scripts/hyprshade.sh rofi"
+        "format": "󰷮",
+        "tooltip-format": "Toggle Screen Shader"
     },
 
     // Hypridle inhibitor
     "custom/hypridle": {
-        "format": "",
+        "format": "󰌾",
         "return-type": "json",
         "escape": true,
         "exec-on-event": true,
         "interval": 60,
-        "exec": "~/dotfiles/hypr/scripts/hypridle.sh status",
-        "on-click": "~/dotfiles/hypr/scripts/hypridle.sh toggle",
-        "on-click-right": "hyprlock"
+        "tooltip-format": "Screen lock"
     },
 
     // Keyboard State
@@ -234,22 +216,31 @@
 
     // CPU
     "cpu": {
-        "format": "/ C {usage}% ",
-        "on-click": "~/dotfiles/.settings/systeminfo.sh"
+        "format": "/ C {usage}% "
     },
 
     // Memory
     "memory": {
-        "format": "/ M {}% ",
-        "on-click": "~/dotfiles/.settings/systeminfo.sh"
+        "format": "/ M {}% "
     },
 
     // Harddisc space used
     "disk": {
         "interval": 30,
         "format": "D {percentage_used}% ",
-        "path": "/",
-        "on-click": "~/dotfiles/.settings/systeminfo.sh"
+        "path": "/"
+    },
+
+    // Memory
+    "memory": {
+        "format": "/ M {}% "
+    },
+
+    // Harddisc space used
+    "disk": {
+        "interval": 30,
+        "format": "D {percentage_used}% ",
+        "path": "/"
     }, 
 
     "hyprland/language": {
@@ -320,13 +311,9 @@
         "format-wifi": "   {signalStrength}%",
         "format-ethernet": "  {ifname}",
         "format-disconnected": "Disconnected",
-        "tooltip-format": " {ifname} via {gwaddri}",
-        "tooltip-format-wifi": "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\nUp: {bandwidthUpBits} Down: {bandwidthDownBits}",
-        "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n up: {bandwidthUpBits} down: {bandwidthDownBits}",
-        "tooltip-format-disconnected": "Disconnected",
+        "tooltip-format": "󰤮 {ifname}",
         "max-length": 50,
-        "on-click": "alacritty --class dotfiles-floating -e nmtui",
-        "on-click-right": "~/dotfiles/.settings/networkmanager.sh"
+        "on-click": "alacritty --class dotfiles-floating -e nmtui"
     },
 
     // Battery
