@@ -212,7 +212,7 @@
     hyprlock
     docker
     docker-compose
-    gamemode
+    bat 
     (pkgs.stdenv.mkDerivation {
       name = "pixie-sddm";
       src = pkgs.fetchFromGitHub {
@@ -246,6 +246,9 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+
+  # PAM configuration for hyprlock
+  security.pam.services.hyprlock = {};
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

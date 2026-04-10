@@ -1,4 +1,4 @@
-{ config, pkgs, caelestia-shell, ... } :
+{ config, pkgs, ... } :
 
 {
   home.username = "ali";
@@ -24,6 +24,20 @@ home.packages = with pkgs; [
   home.file.".config/hyprlock" = {
     source = ./config/hyprlock;
     recursive = true;
+  };
+
+  # Hyprpaper - wallpaper daemon
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      preload = [ "/home/ali/Pictures/wallpapers/winter-16.png" ];
+      wallpaper = [ ",/home/ali/Pictures/wallpapers/winter-16.png" ];
+    };
+  };
+
+  # Hyprlock - screen locker (package only, config via file above)
+  programs.hyprlock = {
+    enable = true;
   };
 
   home.file.".local/bin/zen-twilight" = {
@@ -84,7 +98,21 @@ home.packages = with pkgs; [
     alias .3='cd ../../..'
     alias .4='cd ../../../..'
     alias .5='cd ../../../../..'
-    '';
+    alias gs='git status'
+    alias ga='git add'
+    alias gc='git commit -m'
+    alias gp='git push'
+    alias gl='git log --oneline -10'
+    alias gd='git diff'
+    alias gb='git branch'
+    alias gco='git checkout'
+    alias gcl='git clone'
+    alias gf='git fetch'
+    alias gm='git merge'
+    alias gr='git rebase'
+    alias gst='git stash'
+    alias gstp='git stash pop'
+   '';
   };
   
   services.swaync.enable = true;
@@ -111,7 +139,6 @@ home.packages = with pkgs; [
   };
   env = [
     "LIBVA_DRIVER_NAME,nvidia"
-    "XDG_SESSION_TYPE,wayland"
     "WLR_NO_HARDWARE_CURSORS,1" # Fixes "invisible mouse" bug on NVIDIA
     "__GLX_VENDOR_LIBRARY_NAME,nvidia"
   ];
