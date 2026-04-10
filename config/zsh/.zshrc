@@ -46,8 +46,14 @@ alias ..='cd ..'
 # unset -f command_not_found_handler # Uncomment to prevent searching for commands not found in package manager
 
 # opencode
-export PATH=/home/ali/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH
 
-export PATH=$PATH:/home/ali/.spicetify
+export PATH=$PATH:$HOME/.spicetify
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+if command -v brew >/dev/null 2>&1; then
+  eval "$(brew shellenv zsh)"
+elif [ -d "$HOME/.linuxbrew" ]; then
+  eval "$($HOME/.linuxbrew/bin/brew shellenv zsh)"
+elif [ -d "/home/linuxbrew/.linuxbrew" ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+fi
