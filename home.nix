@@ -31,6 +31,10 @@ home.packages = with pkgs; [
     executable = true;
   };
 
+  home.file = {
+    "Pictures/wallpapers/winter-16.png".source = ./wallpapers/winter-16.png;
+  };
+
   home.file.".local/bin/zen-warmup" = {
     source = ./scripts/zen-warmup;
     executable = true;

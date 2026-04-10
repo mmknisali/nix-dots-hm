@@ -82,7 +82,7 @@
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     open = false;
     nvidiaSettings = true;
     
@@ -111,6 +111,9 @@
 
   # Load NVIDIA modules at boot
   boot.kernelModules = [ "nvidia" "nvidia-drm" "nvidia-modeset" ];
+
+  # Load NVIDIA in initramfs for early KMS
+  boot.initrd.kernelModules = [ "nvidia-drm" "nvidia-modeset" ];
 
 
   # Enable the X11 windowing system.
@@ -167,6 +170,10 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.nvidia.acceptLicense = true;
+  nixpkgs.config.problems.handlers = {
+    nvidia-x11.broken = "warn";
+  };
   #enable bluetooth stuff
   hardware.bluetooth = {
   enable = true;
