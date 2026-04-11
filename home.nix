@@ -112,7 +112,8 @@ home.packages = with pkgs; [
     alias gr='git rebase'
     alias gst='git stash'
     alias gstp='git stash pop'
-   '';
+    alias cat='bat'  
+  '';
   };
   
   services.swaync.enable = true;
