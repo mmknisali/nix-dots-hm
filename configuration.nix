@@ -41,7 +41,8 @@
   lexend
   nerd-fonts.jetbrains-mono
   nerd-fonts.symbols-only
-  ];
+  nerd-fonts.caskaydia-cove
+ ];
 
   programs.hyprland = {
     enable = true;
