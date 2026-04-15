@@ -112,8 +112,11 @@ home.packages = with pkgs; [
     alias gr='git rebase'
     alias gst='git stash'
     alias gstp='git stash pop'
-    alias gstl ='git stash list'
     alias cat='bat'  
+    alias op='opencode'
+    alias opc='opencode --continue'
+    alias gstl='git stash list'
+    freshfetch
   '';
   };
   

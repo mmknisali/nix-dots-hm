@@ -80,6 +80,9 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  #enable docker services
+  virtualisation.docker.enable = true;
+
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
@@ -227,6 +230,7 @@
         cp -r * $out/share/sddm/themes/pixie/
       '';
     })
+    freshfetch
     ];
 
     #eenable tailscale
