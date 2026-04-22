@@ -31,7 +31,18 @@ home.packages = with pkgs; [
     enable = true;
     settings = {
       preload = [ "/home/ali/Pictures/wallpapers/winter-16.png" ];
-      wallpaper = [ ",/home/ali/Pictures/wallpapers/winter-16.png" ];
+      wallpaper = [
+        {
+          monitor = "eDP-1";
+          path = "/home/ali/Pictures/wallpapers/winter-16.png";
+          fit_mode = "cover";
+        }
+        {
+          monitor = "HDMI-A-1";
+          path = "/home/ali/Pictures/wallpapers/winter-16.png";
+          fit_mode = "cover";
+        }
+      ];
     };
   };
 
@@ -103,7 +114,7 @@ home.packages = with pkgs; [
     alias gc='git commit -m'
     alias gp='git push'
     alias gl='git log --oneline -10'
-    alias gd='git diff'
+    alias gd='git diff | bat'
     alias gb='git branch'
     alias gco='git checkout'
     alias gcl='git clone'

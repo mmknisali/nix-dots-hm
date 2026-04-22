@@ -86,7 +86,7 @@
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     open = false;
     nvidiaSettings = true;
     
@@ -106,6 +106,10 @@
     LIBVA_DRIVER_NAME = "nvidia";
     MANGOHUD = "1";
     ENABLE_GAMEMODE = "1";
+    HYPRCURSOR_THEME = "rose-pine-hyprcursor";
+    HYPRCURSOR_SIZE = "24";
+    XCURSOR_THEME = "rose-pine-hyprcursor";
+    XCURSOR_SIZE = "24";
   };
 
   # Kernel parameters
@@ -211,9 +215,11 @@
     wl-clipboard
     (inputs.zen-browser.packages.x86_64-linux.twilight)
     (inputs.devenv.packages.x86_64-linux.default)
+    (inputs.rose-pine-hyprcursor.packages.x86_64-linux.default)
     direnv
     eza
     hyprlock
+    kdePackages.dolphin
     docker
     docker-compose
     bat 
@@ -248,7 +254,14 @@
   # };
 
   # List services that you want to enable:
-
+  programs.ssh = {
+  extraConfig = ''
+    Host howard
+      HostName ssh.alissecretserver.online
+      User ali
+      ProxyCommand cloudflared access ssh --hostname %h
+  '';
+};
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
