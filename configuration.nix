@@ -237,6 +237,13 @@
       '';
     })
     freshfetch
+    brightnessctl
+    hyprshot
+    hyprpicker
+    grim
+    slurp
+    btop
+    nvtop
     ];
 
     #eenable tailscale

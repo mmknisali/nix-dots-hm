@@ -10,6 +10,12 @@ home.packages = with pkgs; [
     xdg-desktop-portal-hyprland
     qt6.qtwayland
     libsForQt5.qtwayland
+    brightnessctl
+    hyprshot
+    hyprpicker
+    grim
+    slurp
+    btop
 ];
 
   #importing config files
@@ -76,20 +82,6 @@ home.packages = with pkgs; [
     executable = true;
   };
 
-  # Waybar scripts
-  home.file.".local/bin/waybar-launch" = {
-    source = ./config/waybar/launch.sh;
-    executable = true;
-  };
-  home.file.".local/bin/waybar-toggle" = {
-    source = ./config/waybar/toggle.sh;
-    executable = true;
-  };
-  home.file.".local/bin/waybar-themeswitcher" = {
-    source = ./config/waybar/themeswitcher.sh;
-    executable = true;
-  };
-
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -98,35 +90,7 @@ home.packages = with pkgs; [
     initContent = ''
     eval "$(starship init zsh)"
     eval "$(direnv hook zsh)"
-    alias c='clear'                                                        # clear terminal
-    alias l='eza -lh --icons=auto'                                         # long list
-    alias ls='eza -1 --icons=auto'                                         # short list
-    alias ll='eza -lha --icons=auto --sort=name --group-directories-first' # long list all
-    alias ld='eza -lhD --icons=auto'                                       # long list dirs
-    alias lt='eza --icons=auto --tree'
-    alias ..='cd ..'
-    alias ...='cd ../..'
-    alias .3='cd ../../..'
-    alias .4='cd ../../../..'
-    alias .5='cd ../../../../..'
-    alias gs='git status'
-    alias ga='git add'
-    alias gc='git commit -m'
-    alias gp='git push'
-    alias gl='git log --oneline -10'
-    alias gd='git diff | bat'
-    alias gb='git branch'
-    alias gco='git checkout'
-    alias gcl='git clone'
-    alias gf='git fetch'
-    alias gm='git merge'
-    alias gr='git rebase'
-    alias gst='git stash'
-    alias gstp='git stash pop'
-    alias cat='bat'  
-    alias op='opencode'
-    alias opc='opencode --continue'
-    alias gstl='git stash list'
+    # Aliases are defined in ~/.config/zsh/.zshrc
     freshfetch
   '';
   };

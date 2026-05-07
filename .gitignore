@@ -1,1 +1,25 @@
-./result
+# Nix build results
+result
+result-*
+
+# Backup files
+*.backup
+
+# Nix direnv
+.direnv/
+
+# Opencode
+.opencode/
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
