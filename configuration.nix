@@ -243,7 +243,6 @@
     grim
     slurp
     btop
-    nvtop
     ];
 
     #eenable tailscale
