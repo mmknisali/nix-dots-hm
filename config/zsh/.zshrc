@@ -1,59 +1,103 @@
-# Add user configurations here
-# For HyDE to not touch your beloved configurations,
-# we added a config file for you to customize HyDE before loading zshrc
-# Edit $ZDOTDIR/.user.zsh to customize HyDE before loading zshrc
+#!/usr/bin/env zsh
+# Main zsh configuration file
 
-#  Plugins 
-# oh-my-zsh plugins are loaded  in $ZDOTDIR/.user.zsh file, see the file for more information
+# Load completions
+autoload -Uz compinit
+compinit
 
-#  Aliases 
-# Override aliases here in '$ZDOTDIR/.zshrc' (already set in .zshenv)
+# Load custom configurations from conf.d
+conf_dir="${ZDOTDIR:-$HOME/.config/zsh}/conf.d"
+if [ -d "$conf_dir" ]; then
+  for file in "$conf_dir"/*.zsh(.N); do
+    source "$file"
+  done
+fi
 
-# ~/.zshrc
-eval "$(direnv hook zsh)"
+# Load functions
+fpath=("${ZDOTDIR:-$HOME/.config/zsh}/functions" $fpath)
+autoload -Uz $fpath[1]/*(.:t)
 
-# # Helpful aliases
- alias c='clear'                                                        # clear terminal
-alias l='eza -lh --icons=auto'                                         # long list
- alias ls='eza -1 --icons=auto'                                         # short list
- alias ll='eza -lha --icons=auto --sort=name --group-directories-first' # long list all
-# alias ld='eza -lhD --icons=auto'                                       # long list dirs
-# alias lt='eza --icons=auto --tree'                                     # list folder as tree
-# alias un='$aurhelper -Rns'                                             # uninstall package
-# alias up='$aurhelper -Syu'                                             # update system/package/aur
-# alias pl='$aurhelper -Qs'                                              # list installed package
-# alias pa='$aurhelper -Ss'                                              # list available package
-# alias pc='$aurhelper -Sc'                                              # remove unused cache
-# alias po='$aurhelper -Qtdq | $aurhelper -Rns -'                        # remove unused packages, also try > $aurhelper -Qqd | $aurhelper -Rsu --print -
-# alias vc='code'                                                        # gui code editor
-# alias fastfetch='fastfetch --logo-type kitty'
+# HyDE integration - load HyDE zsh configs if they exist
+if [ -f "${ZDOTDIR:-$HOME/.config/zsh}/plugin.zsh" ]; then
+  source "${ZDOTDIR:-$HOME/.config/zsh}/plugin.zsh"
+fi
 
-# # Directory navigation shortcuts
+if [ -f "${ZDOTDIR:-$HOME/.config/zsh}/user.zsh" ]; then
+  source "${ZDOTDIR:-$HOME/.config/zsh}/user.zsh"
+fi
+
+# Editor
+export EDITOR=nvim
+export VISUAL=nvim
+
+# History
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+
+# Key bindings
+bindkey -e
+bindkey '^[[A' up-line-or-search
+bindkey '^[[B' down-line-or-search
+
+# Direnv
+if command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+fi
+
+# Starship prompt
+eval "$(starship init zsh)"
+
+# Aliases
+alias c='clear'
+alias l='eza -lh --icons=auto'
+alias ls='eza -1 --icons=auto'
+alias ll='eza -lha --icons=auto --sort=name --group-directories-first'
+alias ld='eza -lhD --icons=auto'
+alias lt='eza --icons=auto --tree'
 alias ..='cd ..'
-# alias ...='cd ../..'
-# alias .3='cd ../../..'
-# alias .4='cd ../../../..'
-# alias .5='cd ../../../../..'
+alias ...='cd ../..'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push'
+alias gl='git log --oneline -10'
+alias gd='git diff | bat'
+alias gb='git branch'
+alias gco='git checkout'
+alias gcl='git clone'
+alias gf='git fetch'
+alias gm='git merge'
+alias gr='git rebase'
+alias gst='git stash'
+alias gstp='git stash pop'
+alias cat='bat'
+alias op='opencode'
+alias opc='opencode --continue'
+alias gstl='git stash list'
 
-# # Always mkdir a path (this doesn't inhibit functionality to make a single dir)
-# alias mkdir='mkdir -p'
-
-#  This is your file 
-# Add your configurations here
- export EDITOR=nvim
-#export EDITOR=code
-
-# unset -f command_not_found_handler # Uncomment to prevent searching for commands not found in package manager
-
-# opencode
+# PATH additions
+export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/.opencode/bin:$PATH
-
 export PATH=$PATH:$HOME/.spicetify
 
+# Homebrew (if installed)
 if command -v brew >/dev/null 2>&1; then
   eval "$(brew shellenv zsh)"
 elif [ -d "$HOME/.linuxbrew" ]; then
   eval "$($HOME/.linuxbrew/bin/brew shellenv zsh)"
 elif [ -d "/home/linuxbrew/.linuxbrew" ]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+fi
+
+# Run freshfetch on startup
+if command -v freshfetch >/dev/null 2>&1; then
+  freshfetch
 fi

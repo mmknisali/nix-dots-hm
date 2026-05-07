@@ -18,7 +18,5 @@ if [ -d "$conf_dir" ]; then
   done
 fi
 
-# Start Hyprland if not already running (for autologin)
-if [ -z "$HYPRLAND_INSTANCE_SIGNAL" ]; then
-    exec Hyprland
-fi
+# Note: Hyprland auto-start removed - launch manually or via display manager
+# To start Hyprland: exec Hyprland

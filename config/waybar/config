@@ -1,8 +1,7 @@
 //* ----------- 💫 https://github.com/JaKooLit 💫 -------- */
 //* ............................................*/
-//* .............CHRYSANTHEMUM.......................*/
+//* .............CUSTOM - Better Visibility.......................*/
 //* ............................................*/
-//* --- 👍 designed by https://github.com/Krautt  👍 --- */
 
 {
 "include": [
@@ -13,29 +12,38 @@
   "$HOME/.config/waybar/UserModules",
   ],
 "layer": "top",
-//"mode": "dock",
 "exclusive": true,
 "passthrough": false,
 "position": "top",
 "spacing": 5,
 "fixed-center": true,
 "ipc": true,
-"margin-left": 5,
-"margin-right": 5,
-"margin-top": 0,
+"margin-left": 8,
+"margin-right": 8,
+"margin-top": 4,
 	
 "modules-left": [
-	"clock#5", 
-	"mpris", 
-	"tray", 
-	"group/notify"
+	"hyprland/workspaces",
+	"custom/separator#dot-line",
+	"mpris",
+	"custom/separator#dot-line",
+	"tray"
 	],
   
-"modules-center": ["hyprland/workspaces"], 
+"modules-center": ["clock"],
 	
 "modules-right": [
-	"pulseaudio#1",
-	"backlight#2", 
-	"battery"],
+	"network",
+	"custom/separator#line",
+	"cpu",
+	"custom/separator#line",
+	"memory",
+	"custom/separator#line",
+	"pulseaudio",
+	"custom/separator#line",
+	"backlight",
+	"custom/separator#line",
+	"battery"
+	],
    
 }
