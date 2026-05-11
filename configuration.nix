@@ -260,16 +260,39 @@
   # };
 
   # List services that you want to enable:
-  programs.ssh = {
-  extraConfig = ''
-    Host howard
-      HostName ssh.alissecretserver.online
-      User ali
-      ProxyCommand cloudflared access ssh --hostname %h
-  '';
+
+# DNS bypass
+networking.nameservers = [ "127.0.0.1" "::1" ];
+networking.networkmanager.dns = "none";
+
+services.dnscrypt-proxy2 = {
+  enable = true;
+  settings = {
+    ipv6_servers = false;
+    require_dnssec = false;
+    listen_addresses = [ "127.0.0.1:53" "[::1]:53" ];
+    sources.public-resolvers = {
+      urls = [
+        "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
+        "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
+      ];
+      cache_file = "/var/cache/dnscrypt-proxy/public-resolvers.md";
+      minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+    };
+  };
 };
+
+# Zapret DPI bypass
+services.zapret = {
+  enable = true;
+  params = [
+    "--dpi-desync=fake"
+    "--dpi-desync-ttl=3"
+  ];
+};
+
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # PAM configuration for hyprlock
   security.pam.services.hyprlock = {};
