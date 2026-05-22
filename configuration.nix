@@ -288,8 +288,78 @@ services.zapret = {
   params = [
     "--dpi-desync=fake"
     "--dpi-desync-ttl=3"
+    "--iface=ap0"   
   ];
 };
+
+services.dnsmasq = {
+    enable = true;
+    settings = {
+      interface = "ap0";
+      dhcp-range = "192.168.50.10,192.168.50.100,12h";
+      dhcp-option = [
+        "3,192.168.50.1"   # gateway
+        "6,192.168.50.1"   # DNS → laptop → dnscrypt-proxy2
+      ];
+      # don't fight with dnscrypt-proxy2 on port 53 for other interfaces
+      no-resolv = true;
+      server = [ "127.0.0.1#53" ];
+    };
+  };
+
+# ── Create virtual AP interface at boot ───────────────────
+  systemd.services.create-ap0 = {
+    description = "Create virtual AP interface ap0";
+    before = [ "hostapd.service" "network-addresses-ap0.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "oneshot";
+    serviceConfig.RemainAfterExit = true;
+    script = ''
+      ${pkgs.iw}/bin/iw dev wlo1 interface add ap0 type __ap || true
+    '';
+  };
+
+  # ── Hotspot ───────────────────────────────────────────────
+  services.hostapd = {
+    enable = true;
+    radios.ap0 = {
+      channel = 6;
+      band = "2g";
+      wifi4.enable = true;
+      networks.ap0 = {
+        ssid = "ClaraHotspot";
+        authentication = {
+          mode = "wpa2";
+          wpaPassword = "yourpassword";
+        };
+      };
+    };
+  };
+
+  # ── Static IP on ap0 ──────────────────────────────────────
+  networking.interfaces.ap0.ipv4.addresses = [{
+    address = "192.168.50.1";
+    prefixLength = 24;
+  }];
+
+  # ── NAT ───────────────────────────────────────────────────
+  networking.nat = {
+    enable = true;
+    internalInterfaces = [ "ap0" ];
+    externalInterface = "wlo1";
+  };
+
+  # ── IP forwarding ─────────────────────────────────────────
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+
+  # ── Stop NetworkManager from hijacking ap0 ────────────────
+  networking.networkmanager.unmanaged = [ "ap0" ];
+
+  # ── Firewall: allow hotspot traffic ───────────────────────
+  networking.firewall.interfaces.ap0 = {
+    allowedTCPPorts = [ 53 80 443 ];
+    allowedUDPPorts = [ 53 67 68 ];
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
