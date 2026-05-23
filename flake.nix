@@ -18,9 +18,13 @@
 	    url = "github:ndom91/rose-pine-hyprcursor";
 	    inputs.nixpkgs.follows = "nixpkgs";
 	  };
+    pixie-sddm = {
+      url = "github:xCaptaiN09/pixie-sddm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 	};
 
-	outputs = { self, nixpkgs, home-manager, zen-browser, rose-pine-hyprcursor, ... }@inputs: {
+	outputs = { self, nixpkgs, home-manager, zen-browser, rose-pine-hyprcursor, pixie-sddm, ... }@inputs: {
 	  nixosConfigurations.clara = nixpkgs.lib.nixosSystem {
 	    system = "x86_64-linux";
 	    modules = [

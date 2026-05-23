@@ -30,11 +30,19 @@
   # Set your time zone.
   time.timeZone = "Europe/Istanbul";
 
-  # SDDM configuration
-  services.xserver.enable = true;
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
-#  services.displayManager.sddm.theme = "pixie";
+   # SDDM configuration
+   services.xserver.enable = true;
+   services.displayManager.sddm.enable = true;
+   services.displayManager.sddm.wayland.enable = true;
+   # Crucial for Qt6: Use the KDE/Qt6 build of SDDM to fix missing cursors and module errors
+   services.displayManager.sddm.package = pkgs.kdePackages.sddm;
+   services.displayManager.sddm.theme = "pixie";
+   # Required dependencies for Qt6 themes
+   services.displayManager.sddm.extraPackages = with pkgs.kdePackages; [
+     qtsvg
+     qtdeclarative
+     qt5compat
+   ];
 
   #fonts for icons and waybar
   fonts.packages = with pkgs; [
@@ -223,19 +231,10 @@
     docker
     docker-compose
     bat 
-   # (pkgs.stdenv.mkDerivation {
-    #  name = "pixie-sddm";
-     # src = pkgs.fetchFromGitHub {
-      #  owner = "xCaptaiN09";
-       # repo = "pixie-sddm";
-        #rev = "main";
-       # sha256 = "sha256-NkjWP/y3kLRjYM0Wr3l7ndbMx3XYxQFXy07C28vrUSU=";
-     # };
-     # installPhase = ''
-      #  mkdir -p $out/share/sddm/themes/pixie
-      #  cp -r * $out/share/sddm/themes/pixie/
-     # '';
-#    })
+    (inputs.pixie-sddm.packages.${pkgs.stdenv.hostPlatform.system}.pixie-sddm.override {
+    background = ./wallpapers/winter-16.png;
+    avatar = ./wallpapers/profile.jpeg;
+    })
     freshfetch
     brightnessctl
     hyprshot
