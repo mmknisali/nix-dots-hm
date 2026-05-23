@@ -34,7 +34,7 @@
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
-  services.displayManager.sddm.theme = "pixie";
+#  services.displayManager.sddm.theme = "pixie";
 
   #fonts for icons and waybar
   fonts.packages = with pkgs; [
@@ -223,19 +223,19 @@
     docker
     docker-compose
     bat 
-    (pkgs.stdenv.mkDerivation {
-      name = "pixie-sddm";
-      src = pkgs.fetchFromGitHub {
-        owner = "xCaptaiN09";
-        repo = "pixie-sddm";
-        rev = "main";
-        sha256 = "sha256-NkjWP/y3kLRjYM0Wr3l7ndbMx3XYxQFXy07C28vrUSU=";
-      };
-      installPhase = ''
-        mkdir -p $out/share/sddm/themes/pixie
-        cp -r * $out/share/sddm/themes/pixie/
-      '';
-    })
+   # (pkgs.stdenv.mkDerivation {
+    #  name = "pixie-sddm";
+     # src = pkgs.fetchFromGitHub {
+      #  owner = "xCaptaiN09";
+       # repo = "pixie-sddm";
+        #rev = "main";
+       # sha256 = "sha256-NkjWP/y3kLRjYM0Wr3l7ndbMx3XYxQFXy07C28vrUSU=";
+     # };
+     # installPhase = ''
+      #  mkdir -p $out/share/sddm/themes/pixie
+      #  cp -r * $out/share/sddm/themes/pixie/
+     # '';
+#    })
     freshfetch
     brightnessctl
     hyprshot
