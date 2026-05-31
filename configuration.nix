@@ -30,8 +30,6 @@
   # Set your time zone.
   time.timeZone = "Europe/Istanbul";
 
-   # SDDM configuration
-   services.xserver.enable = true;
    services.displayManager.sddm.enable = true;
    services.displayManager.sddm.wayland.enable = true;
    # Crucial for Qt6: Use the KDE/Qt6 build of SDDM to fix missing cursors and module errors
@@ -61,14 +59,14 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "tr_TR.UTF-8";
-    LC_IDENTIFICATION = "tr_TR.UTF-8";
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
     LC_MEASUREMENT = "tr_TR.UTF-8";
-    LC_MONETARY = "tr_TR.UTF-8";
-    LC_NAME = "tr_TR.UTF-8";
-    LC_NUMERIC = "tr_TR.UTF-8";
-    LC_PAPER = "tr_TR.UTF-8";
-    LC_TELEPHONE = "tr_TR.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "tr_TR.UTF-8";
   };
 
@@ -124,6 +122,12 @@
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
   ];
+
+  # Force legacy HDA driver and use generic parser to expose all inputs
+  boot.extraModprobeConfig = ''
+    options snd-intel-dspcfg dsp_driver=1
+    options snd-hda-intel model=generic
+  '';
 
   # Load NVIDIA modules at boot
   boot.kernelModules = [ "nvidia" "nvidia-drm" "nvidia-modeset" ];
@@ -247,8 +251,18 @@
     #eenable tailscale
     services.tailscale.enable = true;
     
-  #enable nix ld 
+  #enable nix ld
   programs.nix-ld.enable = true;
+
+  # Enable redistributable firmware (includes SOF firmware for Intel DSP/DMIC)
+  hardware.enableRedistributableFirmware = true;
+
+  # XDG Portal configuration for Hyprland
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    configPackages = [ pkgs.hyprland ];
+  };
    
 services.interception-tools = {
   enable = true;
