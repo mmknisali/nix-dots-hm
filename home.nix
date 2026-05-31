@@ -5,17 +5,10 @@
   home.homeDirectory = "/home/ali";
   home.stateVersion = "25.05";
 
-#home manager packages
 home.packages = with pkgs; [
     xdg-desktop-portal-hyprland
     qt6.qtwayland
     libsForQt5.qtwayland
-    brightnessctl
-    hyprshot
-    hyprpicker
-    grim
-    slurp
-    btop
 ];
 
   #importing config files
@@ -32,20 +25,19 @@ home.packages = with pkgs; [
     recursive = true;
   };
 
-  # Hyprpaper - wallpaper daemon
   services.hyprpaper = {
     enable = true;
     settings = {
-      preload = [ "/home/ali/Pictures/wallpapers/winter-16.png" ];
+      preload = [ "${config.home.homeDirectory}/Pictures/wallpapers/winter-16.png" ];
       wallpaper = [
         {
           monitor = "eDP-1";
-          path = "/home/ali/Pictures/wallpapers/winter-16.png";
+          path = "${config.home.homeDirectory}/Pictures/wallpapers/winter-16.png";
           fit_mode = "cover";
         }
         {
           monitor = "HDMI-A-1";
-          path = "/home/ali/Pictures/wallpapers/winter-16.png";
+          path = "${config.home.homeDirectory}/Pictures/wallpapers/winter-16.png";
           fit_mode = "cover";
         }
       ];

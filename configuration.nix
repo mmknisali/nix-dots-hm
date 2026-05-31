@@ -30,11 +30,17 @@
   # Set your time zone.
   time.timeZone = "Europe/Istanbul";
 
-  # SDDM configuration
-  services.xserver.enable = true;
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
-  services.displayManager.sddm.theme = "pixie";
+   services.displayManager.sddm.enable = true;
+   services.displayManager.sddm.wayland.enable = true;
+   # Crucial for Qt6: Use the KDE/Qt6 build of SDDM to fix missing cursors and module errors
+   services.displayManager.sddm.package = pkgs.kdePackages.sddm;
+   services.displayManager.sddm.theme = "pixie";
+   # Required dependencies for Qt6 themes
+   services.displayManager.sddm.extraPackages = with pkgs.kdePackages; [
+     qtsvg
+     qtdeclarative
+     qt5compat
+   ];
 
   #fonts for icons and waybar
   fonts.packages = with pkgs; [
@@ -53,14 +59,14 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "tr_TR.UTF-8";
-    LC_IDENTIFICATION = "tr_TR.UTF-8";
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
     LC_MEASUREMENT = "tr_TR.UTF-8";
-    LC_MONETARY = "tr_TR.UTF-8";
-    LC_NAME = "tr_TR.UTF-8";
-    LC_NUMERIC = "tr_TR.UTF-8";
-    LC_PAPER = "tr_TR.UTF-8";
-    LC_TELEPHONE = "tr_TR.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "tr_TR.UTF-8";
   };
 
@@ -116,6 +122,12 @@
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
   ];
+
+  # Force legacy HDA driver and use generic parser to expose all inputs
+  boot.extraModprobeConfig = ''
+    options snd-intel-dspcfg dsp_driver=1
+    options snd-hda-intel model=generic
+  '';
 
   # Load NVIDIA modules at boot
   boot.kernelModules = [ "nvidia" "nvidia-drm" "nvidia-modeset" ];
@@ -216,6 +228,7 @@
     (inputs.zen-browser.packages.x86_64-linux.twilight)
     (inputs.devenv.packages.x86_64-linux.default)
     (inputs.rose-pine-hyprcursor.packages.x86_64-linux.default)
+    discord
     direnv
     eza
     hyprlock
@@ -223,18 +236,9 @@
     docker
     docker-compose
     bat 
-    (pkgs.stdenv.mkDerivation {
-      name = "pixie-sddm";
-      src = pkgs.fetchFromGitHub {
-        owner = "xCaptaiN09";
-        repo = "pixie-sddm";
-        rev = "main";
-        sha256 = "sha256-NkjWP/y3kLRjYM0Wr3l7ndbMx3XYxQFXy07C28vrUSU=";
-      };
-      installPhase = ''
-        mkdir -p $out/share/sddm/themes/pixie
-        cp -r * $out/share/sddm/themes/pixie/
-      '';
+    (inputs.pixie-sddm.packages.${pkgs.stdenv.hostPlatform.system}.pixie-sddm.override {
+    background = ./wallpapers/winter-16.png;
+    avatar = ./wallpapers/profile.jpeg;
     })
     freshfetch
     brightnessctl
@@ -248,9 +252,37 @@
     #eenable tailscale
     services.tailscale.enable = true;
     
-  #enable nix ld 
+  #enable nix ld
   programs.nix-ld.enable = true;
-    
+
+  # Enable redistributable firmware (includes SOF firmware for Intel DSP/DMIC)
+  hardware.enableRedistributableFirmware = true;
+
+  # XDG Portal configuration for Hyprland
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    configPackages = [ pkgs.hyprland ];
+  };
+   
+services.interception-tools = {
+  enable = true;
+
+  plugins = with pkgs; [
+    interception-tools-plugins.caps2esc
+  ];
+
+  udevmonConfig = ''
+    - JOB: "${pkgs.interception-tools}/bin/intercept -g $DEVNODE \
+        | ${pkgs.interception-tools-plugins.caps2esc}/bin/caps2esc \
+        | ${pkgs.interception-tools}/bin/uinput -d $DEVNODE"
+      DEVICE:
+        EVENTS:
+          EV_KEY: [KEY_CAPSLOCK, KEY_ESC]
+  '';
+};
+
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -260,28 +292,15 @@
   # };
 
   # List services that you want to enable:
-
-# DNS bypass
-networking.nameservers = [ "127.0.0.1" "::1" ];
-networking.networkmanager.dns = "none";
-
-services.dnscrypt-proxy2 = {
-  enable = true;
-  settings = {
-    ipv6_servers = false;
-    require_dnssec = false;
-    listen_addresses = [ "127.0.0.1:53" "[::1]:53" ];
-    sources.public-resolvers = {
-      urls = [
-        "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
-        "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
-      ];
-      cache_file = "/var/cache/dnscrypt-proxy/public-resolvers.md";
-      minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
-    };
-  };
+  programs.ssh = {
+  extraConfig = ''
+    Host howard
+      HostName ssh.alissecretserver.online
+      User ali
+      ProxyCommand cloudflared access ssh --hostname %h
+  '';
 };
-
+  # Enable the OpenSSH daemon.
 # Zapret DPI bypass
 services.zapret = {
   enable = true;
@@ -291,8 +310,7 @@ services.zapret = {
   ];
 };
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  # services.openssh.enable = true;
 
   # PAM configuration for hyprlock
   security.pam.services.hyprlock = {};
