@@ -176,11 +176,16 @@
     isNormalUser = true;
     hashedPassword = "$y$j9T$SrFGf/IANp31e26ZiPQ2o0$UaQ1ruggDowaDrOtVN674gPkx.XqyWAEsfp7.UbJ1wA";
     description = "ali";
-    extraGroups = [ "networkmanager" "wheel" "input" ];
+    extraGroups = [ "dialout" "networkmanager" "wheel" "input" ];
     packages = with pkgs; [
     #  thunderbird
     ];
   };
+
+  services.udev.extraRules = ''
+  # CP210x (Silicon Labs) - common on ESP32 boards
+  SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE="0666", GROUP="dialout"
+'';
 
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
