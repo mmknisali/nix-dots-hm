@@ -1,9 +1,8 @@
 # Use your plugin system here
 
-return 1 # <--- Comment this line to disable HyDE's oh-my-zsh plugins and use the zinit examples below
-
-#! This file will not load, remove the return 1 line above to enable this file.
-#? Below is an example of how to set up Zsh plugins using Zinit
+# NOTE: Plugins are handled by home-manager (programs.zsh.autosuggestion, syntaxHighlighting).
+# The zinit-based system below is kept as a reference template. Enable by removing the return.
+return 1
 
 # ================================================================
 

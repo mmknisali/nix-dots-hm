@@ -1,4 +1,4 @@
-{ config, pkgs, ... } :
+{ inputs, config, pkgs, ... }:
 
 {
   home.username = "ali";
@@ -12,9 +12,15 @@ home.packages = with pkgs; [
 ];
 
   #importing config files
-  home.file.".config/hypr".source = ./config/hypr;
-  home.file.".config/kitty".source = ./config/kitty;
-  home.file.".config/nvim".source = ./config/nvim;
+  home.file.".config/hypr" = {
+    source = ./config/hypr;
+    recursive = true;
+  };
+  home.file.".config/kitty" = {
+    source = ./config/kitty;
+    recursive = true;
+  };
+  #home.file.".config/nvim".source = ./config/nvim;
   home.file.".config/rofi".source = ./config/rofi;
   home.file.".config/starship.toml".source = ./config/starship/starship.toml;
   #home.file.".config/uwsm".source = ./config/uwsm;
@@ -24,6 +30,9 @@ home.packages = with pkgs; [
     source = ./config/hyprlock;
     recursive = true;
   };
+
+  home.file.".config/opencode/opencode.json".source = ./config/opencode/opencode.json;
+  home.file.".config/opencode/oh-my-openagent.json".source = ./config/opencode/oh-my-openagent.json;
 
   services.hyprpaper = {
     enable = true;
@@ -54,10 +63,8 @@ home.packages = with pkgs; [
     executable = true;
   };
 
-  home.file = {
-    "Pictures/wallpapers/winter-16.png".source = ./wallpapers/winter-16.png;
-    "Pictures/wallpapers/profile.jpeg".source = ./wallpapers/profile.jpeg;
-  };
+  home.file."Pictures/wallpapers/winter-16.png".source = ./wallpapers/winter-16.png;
+  home.file."Pictures/wallpapers/profile.jpeg".source = ./wallpapers/profile.jpeg;
 
   home.file.".local/bin/zen-warmup" = {
     source = ./scripts/zen-warmup;
@@ -80,70 +87,27 @@ home.packages = with pkgs; [
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     initContent = ''
-    eval "$(starship init zsh)"
-    eval "$(direnv hook zsh)"
-    alias c='clear'                                                        
-    alias l='eza -lh --icons=auto'                                        
-    alias ls='eza -1 --icons=auto'                                         
-    alias ll='eza -lha --icons=auto --sort=name --group-directories-first' 
-    alias ld='eza -lhD --icons=auto'                                       
-    alias lt='eza --icons=auto --tree'
-    alias ..='cd ..'
-    alias ...='cd ../..'
-    alias .3='cd ../../..'
-    alias .4='cd ../../../..'
-    alias .5='cd ../../../../..'
-    alias gs='git status'
-    alias ga='git add'
-    alias gc='git commit -m'
-    alias gp='git push'
-    alias gl='git log --oneline -10'
-    alias gd='git diff | bat'
-    alias gb='git branch'
-    alias gco='git checkout'
-    alias gcl='git clone'
-    alias gf='git fetch'
-    alias gm='git merge'
-    alias gr='git rebase'
-    alias gst='git stash'
-    alias gstp='git stash pop'
-    alias cat='bat'  
-    alias op='opencode'
-    alias opc='opencode --continue'
-    alias gstl='git stash list'
-    freshfetch
-  '';
+      export ZDOTDIR="$HOME/.config/zsh"
+      source "$ZDOTDIR/.zshrc"
+    '';
   };
   
   services.swaync.enable = true;
 
+  programs.direnv.enable = true;
 
   programs.starship = {
-  enable = true;
-};
+    enable = true;
+  };
 
-  # imports = [caelestia-shell.homeManagerModules.default];
-  
-  # programs.caelestia = {
-  #   enable = true;
-  #   cli.enable = true;
-  # };
+  imports = [ inputs.lazyvim.homeManagerModules.default ];
+  programs.lazyvim.enable = true;
+
 
   wayland.windowManager.hyprland.settings = {
-   decoration = {
-    blur = {
-      enabled = true;
-      size = 3;
-      passes = 1;
-      };
+    env = [
+      #"WLR_NO_HARDWARE_CURSORS,1" # Fixes "invisible mouse" bug on NVIDIA
+    ];
   };
-  env = [
-    "LIBVA_DRIVER_NAME,nvidia"
-    "WLR_NO_HARDWARE_CURSORS,1" # Fixes "invisible mouse" bug on NVIDIA
-    "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-  ];
-};
-
- 
 }
 

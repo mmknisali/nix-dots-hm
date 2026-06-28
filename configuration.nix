@@ -36,10 +36,10 @@
    services.displayManager.sddm.package = pkgs.kdePackages.sddm;
    services.displayManager.sddm.theme = "pixie";
    # Required dependencies for Qt6 themes
-   services.displayManager.sddm.extraPackages = with pkgs.kdePackages; [
-     qtsvg
-     qtdeclarative
-     qt5compat
+   services.displayManager.sddm.extraPackages = with pkgs; [
+     kdePackages.qt5compat
+     kdePackages.qtsvg
+     qt6.qtdeclarative
    ];
 
   #fonts for icons and waybar
@@ -70,7 +70,7 @@
     LC_TIME = "tr_TR.UTF-8";
   };
 
-  # NVIDIA Graphics
+  # Graphics
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -78,38 +78,35 @@
       libglvnd
       intel-media-driver
       vulkan-loader
-      nvidia-vaapi-driver
       mangohud
       gamemode
     ];
   };
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  #services.xserver.videoDrivers = [ "nvidia" ];
 
   #enable docker services
   virtualisation.docker.enable = true;
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
-    open = false;
-    nvidiaSettings = true;
-    
-    # PRIME Sync for hybrid graphics
-    prime = {
-      sync.enable = true;
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:2:0:0";
-    };
-  };
+  # NVIDIA (disabled)
+  #hardware.nvidia = {
+  #  modesetting.enable = true;
+  #  powerManagement.enable = false;
+  #  package = config.boot.kernelPackages.nvidiaPackages.legacy_535;
+  #  open = false;
+  #  nvidiaSettings = true;
+  #  
+  #  # PRIME Sync for hybrid graphics
+  #  prime = {
+  #    sync.enable = true;
+  #    intelBusId = "PCI:0:2:0";
+  #    nvidiaBusId = "PCI:2:0:0";
+  #  };
+  #};
 
-  # Wayland/NVIDIA environment variables  
+  # Wayland environment variables  
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    LIBVA_DRIVER_NAME = "nvidia";
     MANGOHUD = "1";
     ENABLE_GAMEMODE = "1";
     HYPRCURSOR_THEME = "rose-pine-hyprcursor";
@@ -119,21 +116,13 @@
   };
 
   # Kernel parameters
-  boot.kernelParams = [
-    "nvidia-drm.modeset=1"
-  ];
+  boot.kernelParams = [ ];
 
-  # Force legacy HDA driver and use generic parser to expose all inputs
-  boot.extraModprobeConfig = ''
-    options snd-intel-dspcfg dsp_driver=1
-    options snd-hda-intel model=generic
-  '';
+  # Kernel modules
+  boot.kernelModules = [ ];
 
-  # Load NVIDIA modules at boot
-  boot.kernelModules = [ "nvidia" "nvidia-drm" "nvidia-modeset" ];
-
-  # Load NVIDIA in initramfs for early KMS
-  boot.initrd.kernelModules = [ "nvidia-drm" "nvidia-modeset" ];
+  # Initrd modules
+  boot.initrd.kernelModules = [ ];
 
 
   # Enable the X11 windowing system.
@@ -195,10 +184,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.nvidia.acceptLicense = true;
-  nixpkgs.config.problems.handlers = {
-    nvidia-x11.broken = "warn";
-  };
   #enable bluetooth stuff
   hardware.bluetooth = {
   enable = true;
@@ -219,7 +204,6 @@
     waybar
     neovim
     kitty
-    starship
     uwsm
     rofi
     swaynotificationcenter
@@ -233,7 +217,6 @@
     (inputs.zen-browser.packages.x86_64-linux.twilight)
     (inputs.devenv.packages.x86_64-linux.default)
     (inputs.rose-pine-hyprcursor.packages.x86_64-linux.default)
-    direnv
     eza
     hyprlock
     kdePackages.dolphin
@@ -251,10 +234,22 @@
     grim
     slurp
     btop
+    pwvucontrol
+    networkmanagerapplet
+    nwg-look
+    nwg-displays
+    kdePackages.qtstyleplugin-kvantum
+    poweralertd
+    libnotify
+    hypridle
+    jq
     ];
 
     #eenable tailscale
     services.tailscale.enable = true;
+    
+  #enable power profiles (for waybar power-profiles-daemon module)
+  services.power-profiles-daemon.enable = true;
     
   #enable nix ld
   programs.nix-ld.enable = true;

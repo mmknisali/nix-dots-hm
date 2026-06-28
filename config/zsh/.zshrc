@@ -17,14 +17,8 @@ fi
 fpath=("${ZDOTDIR:-$HOME/.config/zsh}/functions" $fpath)
 autoload -Uz $fpath[1]/*(.:t)
 
-# HyDE integration - load HyDE zsh configs if they exist
-if [ -f "${ZDOTDIR:-$HOME/.config/zsh}/plugin.zsh" ]; then
-  source "${ZDOTDIR:-$HOME/.config/zsh}/plugin.zsh"
-fi
-
-if [ -f "${ZDOTDIR:-$HOME/.config/zsh}/user.zsh" ]; then
-  source "${ZDOTDIR:-$HOME/.config/zsh}/user.zsh"
-fi
+# HyDE integration - plugins and configs are loaded via conf.d/hyde/terminal.zsh
+# (sourced from .zshenv -> conf.d/*.zsh). Not duplicated here.
 
 # Editor
 export EDITOR=nvim
@@ -44,13 +38,9 @@ bindkey -e
 bindkey '^[[A' up-line-or-search
 bindkey '^[[B' down-line-or-search
 
-# Direnv
-if command -v direnv >/dev/null 2>&1; then
-  eval "$(direnv hook zsh)"
-fi
+# Direnv (handled by home-manager programs.direnv)
 
-# Starship prompt
-eval "$(starship init zsh)"
+# Starship prompt (handled by home-manager programs.starship)
 
 # Aliases
 alias c='clear'

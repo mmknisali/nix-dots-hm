@@ -40,9 +40,8 @@
 
 "custom/settings": {
 	"format": " ",
-	"on-click": "$HOME/.config/hypr/scripts/Kool_Quick_Settings.sh",
 	"tooltip": true,
-	"tooltip-format": "Launch KooL Hyprland Settings Menu",
+	"tooltip-format": "Settings Menu",
 },
 
 "custom/cycle_wall": {
@@ -265,5 +264,35 @@
 "custom/arrow10": {
 	"format": "",
 	"tooltip": false
+},
+"custom/audio_settings": {
+	"format": " 󰓃 ",
+	"on-click": "pwvucontrol",
+	"tooltip": true,
+	"tooltip-format": "Audio Settings",
+},
+"custom/network_settings": {
+	"format": "󰖩 ",
+	"on-click": "nm-connection-editor",
+	"tooltip": true,
+	"tooltip-format": "Network Connections",
+},
+"custom/display_settings": {
+	"format": "󰹑 ",
+	"on-click": "nwg-displays",
+	"tooltip": true,
+	"tooltip-format": "Display Arrangement",
+},
+"custom/gtk_theme": {
+	"format": "󰉼 ",
+	"on-click": "nwg-look",
+	"tooltip": true,
+	"tooltip-format": "GTK Theme Settings",
+},
+"custom/kvantum": {
+	"format": "󰄶 ",
+	"on-click": "kvantum-manager",
+	"tooltip": true,
+	"tooltip-format": "Kvantum Theme Manager",
 }
 }

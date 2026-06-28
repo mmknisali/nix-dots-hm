@@ -34,16 +34,16 @@
 	
 "modules-right": [
 	"network",
-	"custom/separator#line",
-	"cpu",
-	"custom/separator#line",
-	"memory",
-	"custom/separator#line",
-	"pulseaudio",
-	"custom/separator#line",
-	"backlight",
-	"custom/separator#line",
-	"battery"
+	"custom/separator#dot-line",
+	"group/motherboard",
+	"custom/separator#dot-line",
+	"group/audio",
+	"custom/separator#dot-line",
+	"group/laptop",
+	"custom/separator#dot-line",
+	"bluetooth",
+	"custom/separator#dot-line",
+	"group/settings"
 	],
    
 }

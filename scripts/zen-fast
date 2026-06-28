@@ -2,8 +2,6 @@
 export MOZ_ENABLE_WAYLAND=1
 
 if [ -d /proc/driver/nvidia ]; then
-    export gfx.webrender.all=1
-    export gfx.use.gpu.processing=1
     exec zen-twilight --no-sandbox "$@"
 else
     exec zen-twilight --no-sandbox --disable-gpu --disable-software-rasterizer "$@"

@@ -149,7 +149,7 @@ version_format = "${raw}"
 
 [rust]
 style = "bold bright-red"
-format = " rs(italic) $symbol($style)"
+format = " [rs](italic) [$symbol]($style)"
 symbol = " "
 
 [swift]
@@ -271,7 +271,7 @@ impure_msg = '[⌽](bold dimmed red)'
 pure_msg = '[⌾](bold dimmed green)'
 style = 'bold italic dimmed blue'
 symbol = ' '
-unknown_msg = '[◌](bold dimmed ellow)'
+unknown_msg = '[◌](bold dimmed yellow)'
 
 [spack]
 style = "bold bright-yellow"

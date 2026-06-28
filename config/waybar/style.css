@@ -22,7 +22,6 @@ window#waybar.hidden {
 	opacity: 0.5;
 }
 
-window#waybar.empty	
 window#waybar.empty #window {
    padding: 0px;
    border: 0px;
@@ -108,6 +107,11 @@ window#waybar.empty #window {
 #custom-quit,
 #custom-reboot,
 #custom-settings,
+#custom-audio_settings,
+#custom-display_settings,
+#custom-gtk_theme,
+#custom-kvantum,
+#custom-network_settings,
 #custom-spotify,
 #custom-swaync,
 #custom-tty,
@@ -116,7 +120,7 @@ window#waybar.empty #window {
 #custom-weather.clearNight,
 #custom-weather.cloudyFoggyDay,
 #custom-weather.cloudyFoggyNight,
-#custom-weather.default 
+#custom-weather.default,
 #custom-weather.rainyDay,
 #custom-weather.rainyNight,
 #custom-weather.severe,

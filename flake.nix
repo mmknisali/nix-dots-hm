@@ -1,14 +1,14 @@
 {
 	description = "Hyprland nixos";
 
-  inputs.devenv.url = "github:cachix/devenv/9e5c17caf0ead1bb29d430d4c0a26a77bc5d374b";
-  
 	inputs = {
+    devenv.url = "github:cachix/devenv/9e5c17caf0ead1bb29d430d4c0a26a77bc5d374b";
 	  nixpkgs.url = "nixpkgs/nixos-unstable";
 	  home-manager = {
 	    url = "github:nix-community/home-manager";
 	    inputs.nixpkgs.follows = "nixpkgs";
 	  };
+    lazyvim.url = "github:pfassina/lazyvim-nix";
 	  zen-browser = {
 	    url = "github:tstachl/zen-browser-flake";
 	    inputs.nixpkgs.follows = "nixpkgs";
@@ -24,7 +24,7 @@
     };
 	};
 
-	outputs = { self, nixpkgs, home-manager, zen-browser, rose-pine-hyprcursor, pixie-sddm, ... }@inputs: {
+	outputs = { self, nixpkgs, home-manager, zen-browser, rose-pine-hyprcursor, pixie-sddm, lazyvim, ... }@inputs: {
 	  nixosConfigurations.clara = nixpkgs.lib.nixosSystem {
 	    system = "x86_64-linux";
 	    modules = [
@@ -36,7 +36,8 @@
 			  useUserPackages = true;
 			  users.ali = import ./home.nix;
 			  backupFileExtension = "backup";
-	        };
+	      extraSpecialArgs = { inherit inputs; }; 
+         };
 	      }
 	    ];
 	    specialArgs = { inherit inputs; };

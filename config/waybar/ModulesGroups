@@ -25,7 +25,6 @@
 	"orientation": "horizontal",
 	"modules": [
 		"cpu",
-		"power-profiles-daemon",
 		"memory",
 		"temperature",
 		"disk",
@@ -42,7 +41,6 @@
 	"modules": [
 		"temperature",		
 		"cpu",
-		"power-profiles-daemon",	
 		"memory",
 		"disk",
 	]
@@ -52,6 +50,7 @@
 	"modules": [
 		"backlight",
 		"battery",
+		"power-profiles-daemon",
 	]
 },
 "group/audio": {
@@ -120,6 +119,22 @@
         "custom/lock",
         "custom/reboot"
       ]
+},
+"group/settings": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 500,
+		"children-class": "custom/settings",
+		"transition-left-to-right": true
+	},
+	"modules": [
+		"custom/settings",
+		"custom/audio_settings",
+		"custom/network_settings",
+		"custom/display_settings",
+		"custom/gtk_theme",
+		"custom/kvantum",
+	]
 },
 // groups for vertical
 "group/power#vert": {
