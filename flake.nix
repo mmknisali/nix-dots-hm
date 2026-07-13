@@ -8,6 +8,7 @@
 	    url = "github:nix-community/home-manager";
 	    inputs.nixpkgs.follows = "nixpkgs";
 	  };
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     lazyvim.url = "github:pfassina/lazyvim-nix";
 	  zen-browser = {
 	    url = "github:tstachl/zen-browser-flake";
@@ -24,7 +25,7 @@
     };
 	};
 
-	outputs = { self, nixpkgs, home-manager, zen-browser, rose-pine-hyprcursor, pixie-sddm, lazyvim, ... }@inputs: {
+	outputs = { self, nixpkgs, home-manager, zen-browser, rose-pine-hyprcursor, pixie-sddm, lazyvim, spicetify-nix, ... }@inputs: {
 	  nixosConfigurations.clara = nixpkgs.lib.nixosSystem {
 	    system = "x86_64-linux";
 	    modules = [

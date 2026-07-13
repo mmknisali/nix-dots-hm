@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      inputs.spicetify-nix.nixosModules.default
     ];
 
   # Bootloader.
@@ -149,12 +150,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    wireplumber.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -186,8 +182,14 @@
   nixpkgs.config.allowUnfree = true;
   #enable bluetooth stuff
   hardware.bluetooth = {
-  enable = true;
-  powerOnBoot = true;
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+        Experimental = true;
+      };
+    };
   };
 
   #enable blueman
@@ -291,17 +293,36 @@ services.interception-tools = {
   # };
 
   # List services that you want to enable:
-  programs.ssh = {
-  extraConfig = ''
-    Host howard
-      HostName ssh.alissecretserver.online
-      User ali
-      ProxyCommand cloudflared access ssh --hostname %h
-  '';
+  
+  # DNS bypass
+networking.nameservers = [ "127.0.0.1" "::1" ];
+networking.networkmanager.dns = "none";
+services.dnscrypt-proxy2 = {
+  enable = true;
+  settings = {
+    ipv6_servers = false;
+    require_dnssec = false;
+    listen_addresses = [ "127.0.0.1:53" "[::1]:53" ];
+    sources.public-resolvers = {
+      urls = [
+        "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
+        "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
+      ];
+      cache_file = "/var/cache/dnscrypt-proxy/public-resolvers.md";
+      minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+    };
+  };
 };
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
+  # Zapret DPI bypass
+services.zapret = {
+  enable = true;
+  params = [
+    "--dpi-desync=fake"
+    "--dpi-desync-ttl=3"
+  ];
+};
   # PAM configuration for hyprlock
   security.pam.services.hyprlock = {};
 
