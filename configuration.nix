@@ -237,6 +237,8 @@
     libnotify
     hypridle
     jq
+    python3
+    cava
     ];
 
     #eenable tailscale

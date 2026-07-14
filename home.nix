@@ -105,12 +105,5 @@ home.packages = with pkgs; [
 
   imports = [ inputs.lazyvim.homeManagerModules.default ];
   programs.lazyvim.enable = true;
-
-
-  wayland.windowManager.hyprland.settings = {
-    env = [
-      #"WLR_NO_HARDWARE_CURSORS,1" # Fixes "invisible mouse" bug on NVIDIA
-    ];
-  };
 }
 
