@@ -3,12 +3,15 @@
 {
   home.username = "ali";
   home.homeDirectory = "/home/ali";
+  # Home Manager release this config was first used with. Independent from the
+  # NixOS system.stateVersion in configuration.nix (25.11).
   home.stateVersion = "25.05";
 
 home.packages = with pkgs; [
     xdg-desktop-portal-hyprland
     qt6.qtwayland
     libsForQt5.qtwayland
+    opencode
 ];
 
   #importing config files

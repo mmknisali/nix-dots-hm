@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # Restart waybar (styles are reloaded from files)
-pkill waybar
+pkill -x waybar
 sleep 0.2
-waybar
+waybar >/dev/null 2>&1 &

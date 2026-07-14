@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Launch system monitors
+# Launch system monitors / helpers from Waybar custom modules
 
 case "$1" in
     --nvtop)
@@ -8,8 +8,14 @@ case "$1" in
     --btop)
         kitty --class btop -e btop
         ;;
+    --files)
+        dolphin
+        ;;
+    --term)
+        kitty
+        ;;
     *)
-        echo "Usage: $0 {--nvtop|--btop}"
+        echo "Usage: $0 {--nvtop|--btop|--files|--term}"
         exit 1
         ;;
 esac

@@ -8,7 +8,7 @@ if [[ $- == *i* ]]; then
     elif command -v pokemon-colorscripts >/dev/null; then
         pokemon-colorscripts --no-title -r 1,3,6
     elif command -v fastfetch >/dev/null; then
-        if do_render "image"; then
+        if command -v do_render >/dev/null 2>&1 && do_render "image"; then
             fastfetch --logo-type kitty
         fi
     fi

@@ -22,7 +22,7 @@ This repository contains my NixOS system configuration with:
 | Component | Details |
 |-----------|---------|
 | CPU | Intel Whiskey Lake-U (Intel UHD Graphics 620) |
-| GPU | NVIDIA GeForce MX110 (with PRIME Sync) |
+| GPU | Intel UHD Graphics 620 (NVIDIA MX110 present but **disabled** in config) |
 | Display | Integrated + External via Intel |
 | Audio | PipeWire |
 
@@ -46,12 +46,18 @@ cd ~/.dotfiles
 nix flake update
 ```
 
-3. Rebuild the system:
+3. (First-time only) Generate the host-specific hardware config:
+```bash
+sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix
+```
+This file is gitignored on purpose and must exist on the target machine for the build to succeed.
+
+4. Rebuild the system:
 ```bash
 sudo nixos-rebuild switch --flake .#clara
 ```
 
-4. Reboot
+5. Reboot
 
 ### Post-Installation
 
@@ -83,12 +89,12 @@ The system is configured with:
     │   ├── colors.conf   # Color definitions
     │   └── scripts/      # Widget scripts
     ├── kitty/            # Terminal emulator
-    ├── nvim/             # Neovim (LazyVim)
+    ├── nvim/             # Neovim config (optional; Neovim is managed via the LazyVim Home Manager module)
     ├── rofi/             # Application launcher
     ├── starship/         # Shell prompt
     ├── waybar/           # Status bar
-    └── zsh/              # Zsh configuration
-        ├── .zshrc        # Main zshrc (loads hyde)
+    └── zsh/              # Zsh configuration (HyDE-compatible, but HyDE itself is not installed via this flake)
+        ├── .zshrc        # Main zshrc
         ├── .zshenv       # Environment variables
         └── user.zsh      # User customizations
 ```
@@ -110,10 +116,9 @@ The system is configured with:
 
 ### NVIDIA GPU Support
 
-- PRIME Sync mode (NVIDIA dGPU + Intel iGPU)
-- Proprietary NVIDIA drivers
-- Full Wayland support with GBM backend
-- Kernel mode setting enabled
+- NVIDIA is currently **disabled** in `configuration.nix` (the `hardware.nvidia` block is commented out).
+- The system runs on the Intel Whiskey Lake-U iGPU (UHD Graphics 620) with the open `modesetting`/i915 driver.
+- To re-enable NVIDIA, uncomment the `hardware.nvidia` block and adjust the bus IDs to your hardware, then rebuild.
 
 ### Hyprland
 
@@ -131,16 +136,14 @@ The system is configured with:
 - Zsh autosuggestions
 - direnv integration
 
-### Waybar Theme Switcher
+### Waybar Style Reload
 
-A theme switcher is built into waybar with multiple themes to choose from.
+The Waybar configuration ships multiple style presets under `config/waybar/style/` and `config/waybar/configs/`.
 
-- **Keybinding**: `Super + Ctrl + T` - Open theme switcher (Rofi menu)
-- **Click**: Click the theme icon in waybar to open theme switcher
+- **Keybinding**: `Super + Ctrl + T` (or `Right Alt + Right Ctrl`) - Restart Waybar so style/config changes are reloaded.
+- Style selection scripts live in `config/hypr/scripts/` (e.g. `WaybarStyles.sh`, `WaybarLayout.sh`).
 
-Available themes include: ML4W Light/Dark/Mixed/Colored, ML4W Blur, ML4W Blur Bottom, ML4W Minimal, and more.
-
-The theme switcher stores your selection in `~/.cache/.themestyle.sh` and waybar automatically reloads with the new theme.
+Switch the active preset by editing the style symlink/config and pressing the reload keybinding.
 
 ## Keybindings
 
@@ -166,10 +169,12 @@ The theme switcher stores your selection in `~/.cache/.themestyle.sh` and waybar
 |-----|--------|
 | `Super + T` | Terminal (Kitty) |
 | `Super + B` | Browser (Zen Browser) |
+| `Backslash` | Toggle terminal special workspace |
 | `Super + A` | Launcher (Rofi) |
 | `Super + Tab` | Window switcher (Rofi) |
 | `Super + M` | Music player |
 | `Super + L` | Lock screen (Hyprlock-Dots) |
+| `Super + Ctrl + T` | Reload Waybar styles |
 
 ### Media Keys
 
@@ -220,16 +225,17 @@ The theme switcher stores your selection in `~/.cache/.themestyle.sh` and waybar
 
 ## Environment Variables
 
-Key environment variables set:
+Key environment variables set (in `configuration.nix` → `environment.sessionVariables`):
 
 | Variable | Value | Purpose |
 |----------|-------|---------|
 | `NIXOS_OZONE_WL` | `1` | Enable Wayland in Electron apps |
-| `GBM_BACKEND` | `nvidia-drm` | NVIDIA GBM backend |
-| `__GLX_VENDOR_LIBRARY_NAME` | `nvidia` | Use NVIDIA GLX |
-| `LIBVA_DRIVER_NAME` | `nvidia` | NVIDIA VA-API |
-| `XDG_SESSION_TYPE` | `wayland` | Wayland session |
-| `WLR_NO_HARDWARE_CURSORS` | `1` | Fix invisible mouse on NVIDIA |
+| `HYPRCURSOR_THEME` | `rose-pine-hyprcursor` | Cursor theme for Hyprland |
+| `HYPRCURSOR_SIZE` | `24` | Cursor size for Hyprland |
+| `XCURSOR_THEME` | `rose-pine-hyprcursor` | Cursor theme for XWayland/Qt |
+| `XCURSOR_SIZE` | `24` | Cursor size for XWayland/Qt |
+
+> Mangohud/gamemode are **not** enabled globally (they were removed to avoid wrapping every GUI app). Enable them per-game via `gamemoderun`/mangohud launchers instead.
 
 ## Troubleshooting
 

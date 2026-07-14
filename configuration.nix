@@ -7,12 +7,16 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      # NOTE: hardware-configuration.nix is host-specific and intentionally
+      # gitignored. Generate it on the target machine with:
+      #   sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix
       ./hardware-configuration.nix
       inputs.spicetify-nix.nixosModules.default
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "Clara"; # Define your hostname.
@@ -27,6 +31,24 @@
 
   #nix-commands and flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Automatic store garbage collection + faster builds via binary caches
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+  nix.settings.substituters = [
+    "https://cache.nixos.org"
+    "https://hyprland.cachix.org"
+    "https://nix-community.cachix.org"
+  ];
+  nix.settings.trusted-public-keys = [
+    "hyprland.cachix.org-1:aED73lESCrJ7+O4cyj+1Voxpjmb5/NhDSBqlHvTSG1M="
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  ];
+  # Let the user run nix commands (build, run, etc.) without sudo
+  nix.settings.trusted-users = [ "root" "ali" ];
 
   # Set your time zone.
   time.timeZone = "Europe/Istanbul";
@@ -84,32 +106,12 @@
     ];
   };
 
-  #services.xserver.videoDrivers = [ "nvidia" ];
-
   #enable docker services
   virtualisation.docker.enable = true;
-
-  # NVIDIA (disabled)
-  #hardware.nvidia = {
-  #  modesetting.enable = true;
-  #  powerManagement.enable = false;
-  #  package = config.boot.kernelPackages.nvidiaPackages.legacy_535;
-  #  open = false;
-  #  nvidiaSettings = true;
-  #  
-  #  # PRIME Sync for hybrid graphics
-  #  prime = {
-  #    sync.enable = true;
-  #    intelBusId = "PCI:0:2:0";
-  #    nvidiaBusId = "PCI:2:0:0";
-  #  };
-  #};
 
   # Wayland environment variables  
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    MANGOHUD = "1";
-    ENABLE_GAMEMODE = "1";
     HYPRCURSOR_THEME = "rose-pine-hyprcursor";
     HYPRCURSOR_SIZE = "24";
     XCURSOR_THEME = "rose-pine-hyprcursor";
@@ -124,20 +126,6 @@
 
   # Initrd modules
   boot.initrd.kernelModules = [ ];
-
-
-  # Enable the X11 windowing system.
- # services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  #services.xserver.displayManager.gdm.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
-
-  # Configure keymap in X11
-  #services.xserver.xkb = {
-   # layout = "us";
-    #variant = "";
-  #};
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -178,7 +166,10 @@
   # Install firefox.
   programs.firefox.enable = true;
 
-  # Allow unfree packages
+  # Allow unfree packages. Currently needed for a few packages pulled in via
+  # flake inputs (e.g. zen-browser). `opencode` from nixpkgs is MIT/free and
+  # does NOT require this. If you want to scope this down later, switch to
+  # `nixpkgs.config.allowUnfreePredicate` to allow only specific package names.
   nixpkgs.config.allowUnfree = true;
   #enable bluetooth stuff
   hardware.bluetooth = {
@@ -241,6 +232,7 @@
     nwg-look
     nwg-displays
     kdePackages.qtstyleplugin-kvantum
+    kdePackages.kvantum
     poweralertd
     libnotify
     hypridle
@@ -249,6 +241,8 @@
 
     #eenable tailscale
     services.tailscale.enable = true;
+    # Open the firewall for Tailscale (covers the tailnet port and subnet routes)
+    services.tailscale.openFirewall = true;
     
   #enable power profiles (for waybar power-profiles-daemon module)
   services.power-profiles-daemon.enable = true;
@@ -262,7 +256,7 @@
   # XDG Portal configuration for Hyprland
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk ];
     configPackages = [ pkgs.hyprland ];
   };
    
@@ -295,14 +289,18 @@ services.interception-tools = {
   # List services that you want to enable:
   
   # DNS bypass
-networking.nameservers = [ "127.0.0.1" "::1" ];
-networking.networkmanager.dns = "none";
-services.dnscrypt-proxy2 = {
-  enable = true;
-  settings = {
-    ipv6_servers = false;
-    require_dnssec = false;
-    listen_addresses = [ "127.0.0.1:53" "[::1]:53" ];
+  networking.nameservers = [ "127.0.0.1" "::1" ];
+  networking.networkmanager.dns = "none";
+  services.dnscrypt-proxy2 = {
+    enable = true;
+    settings = {
+      ipv6_servers = false;
+      require_dnssec = false;
+      # Used only if all configured sources are unreachable, so DNS still
+      # works when dnscrypt-proxy fails. Replace with a DoH stamp if your
+      # network blocks plaintext DNS.
+      fallback_resolver = "9.9.9.9:53";
+      listen_addresses = [ "127.0.0.1:53" "[::1]:53" ];
     sources.public-resolvers = {
       urls = [
         "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
@@ -338,6 +336,8 @@ services.zapret = {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  # NixOS release the system was first installed with. Independent from the
+  # Home Manager stateVersion in home.nix (25.05) — they track different stores.
   system.stateVersion = "25.11"; # Did you read the comment?
 
 }

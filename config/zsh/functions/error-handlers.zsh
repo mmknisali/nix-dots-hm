@@ -2,7 +2,14 @@ function command_not_found_handler {
     local purple='\e[1;35m' bright='\e[0;1m' green='\e[1;32m' reset='\e[0m'
     printf "${green}zsh${reset}: command ${purple}NOT${reset} found: ${bright}'%s'${reset}\n" "$1"
 
-    if ! ${PM_COMMAND[@]} -h &>/dev/null; then
+    # Only attempt a package search if a package manager command is defined
+    # (set by HyDE). Without it, skip to avoid recursion on missing commands.
+    (( ${+PM_COMMAND} )) || return 127
+    if [[ -z "${PM_COMMAND[*]}" ]]; then
+        return 127
+    fi
+
+    if ! "${PM_COMMAND[@]}" -h &>/dev/null; then
         return 127
     fi
 
