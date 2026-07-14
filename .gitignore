@@ -19,6 +19,7 @@ result-*
 # IDE
 .vscode/
 .idea/
+hardware-configuration.nix
 
 # OS files
 .DS_Store
