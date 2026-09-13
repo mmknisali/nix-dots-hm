@@ -14,8 +14,11 @@ case "$1" in
     --term)
         kitty
         ;;
+    --nmtui)
+        kitty --class nmtui -e nmtui
+        ;;
     *)
-        echo "Usage: $0 {--nvtop|--btop|--files|--term}"
+        echo "Usage: $0 {--nvtop|--btop|--files|--term|--nmtui}"
         exit 1
         ;;
 esac

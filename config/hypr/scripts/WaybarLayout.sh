@@ -5,5 +5,5 @@ if [ ! -d "$config_dir" ]; then
   notify-send "Waybar" "No layout configs found"
   exit 1
 fi
-layout=$(ls "$config_dir" | rofi -dmenu -p "Waybar Layout" -theme-str 'listview {lines: 10;}')
-[ -n "$layout" ] && cp "$config_dir/$layout" ~/.config/waybar/config && pkill waybar && sleep 0.2 && waybar
+layout=$(find "$config_dir" -maxdepth 1 -type f -printf '%f\n' | sort | rofi -dmenu -p "Waybar Layout" -theme-str 'listview {lines: 10;}')
+[ -n "$layout" ] && cp --remove-destination "$config_dir/$layout" ~/.config/waybar/config && systemctl --user restart waybar.service

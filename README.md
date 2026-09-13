@@ -54,10 +54,15 @@ This file is gitignored on purpose and must exist on the target machine for the 
 
 4. Rebuild the system:
 ```bash
-sudo nixos-rebuild switch --flake .#clara
+sudo nixos-rebuild switch --flake path:.#clara
 ```
 
-5. Reboot
+5. Set the local account password on a new installation:
+```bash
+sudo passwd ali
+```
+
+6. Reboot
 
 ### Post-Installation
 
@@ -308,14 +313,12 @@ tail -f ~/.hyprlock.log
 nix flake update
 
 # Rebuild
-sudo nixos-rebuild switch --flake .#clara
+sudo nixos-rebuild switch --flake path:.#clara
 ```
 
-### Update Home Manager
-
-```bash
-home-manager switch
-```
+Home Manager is integrated into the NixOS configuration, so its changes are
+applied by the same `nixos-rebuild` command. This flake does not expose a
+standalone `homeConfigurations` output.
 
 ### Backup Configuration
 

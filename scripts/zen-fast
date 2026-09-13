@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
-export MOZ_ENABLE_WAYLAND=1
+set -euo pipefail
 
-if [ -d /proc/driver/nvidia ]; then
-    exec zen-twilight --no-sandbox "$@"
-else
-    exec zen-twilight --no-sandbox --disable-gpu --disable-software-rasterizer "$@"
-fi
+export MOZ_ENABLE_WAYLAND=1
+exec zen-twilight "$@"

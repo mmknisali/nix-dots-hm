@@ -280,7 +280,7 @@
 },
 "custom/kvantum": {
 	"format": "󰄶 ",
-	"on-click": "kvantum-manager",
+	"on-click": "kvantummanager",
 	"tooltip": true,
 	"tooltip-format": "Kvantum Theme Manager",
 }

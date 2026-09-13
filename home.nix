@@ -1,18 +1,21 @@
-{ inputs, config, pkgs, ... }:
-
 {
+  inputs,
+  config,
+  pkgs,
+  ...
+}: {
   home.username = "ali";
   home.homeDirectory = "/home/ali";
   # Home Manager release this config was first used with. Independent from the
   # NixOS system.stateVersion in configuration.nix (25.11).
   home.stateVersion = "25.05";
 
-home.packages = with pkgs; [
+  home.packages = with pkgs; [
     xdg-desktop-portal-hyprland
     qt6.qtwayland
     libsForQt5.qtwayland
     opencode
-];
+  ];
 
   #importing config files
   home.file.".config/hypr" = {
@@ -27,20 +30,24 @@ home.packages = with pkgs; [
   home.file.".config/rofi".source = ./config/rofi;
   home.file.".config/starship.toml".source = ./config/starship/starship.toml;
   #home.file.".config/uwsm".source = ./config/uwsm;
-  home.file.".config/waybar".source = ./config/waybar;
+  home.file.".config/waybar" = {
+    source = ./config/waybar;
+    recursive = true;
+  };
   home.file.".config/zsh".source = ./config/zsh;
   home.file.".config/hyprlock" = {
     source = ./config/hyprlock;
     recursive = true;
   };
+  home.file.".config/hypr/hyprlock.conf".source = ./config/hyprlock/hyprlock.conf;
 
-  home.file.".config/opencode/opencode.json".source = ./config/opencode/opencode.json;
-  home.file.".config/opencode/oh-my-openagent.json".source = ./config/opencode/oh-my-openagent.json;
+  #  home.file.".config/opencode/opencode.json".source = ./config/opencode/opencode.json;
+  # home.file.".config/opencode/oh-my-openagent.json".source = ./config/opencode/oh-my-openagent.json;
 
   services.hyprpaper = {
     enable = true;
     settings = {
-      preload = [ "${config.home.homeDirectory}/Pictures/wallpapers/winter-16.png" ];
+      preload = ["${config.home.homeDirectory}/Pictures/wallpapers/winter-16.png"];
       wallpaper = [
         {
           monitor = "eDP-1";
@@ -61,7 +68,7 @@ home.packages = with pkgs; [
     enable = true;
   };
 
-  home.file.".local/bin/zen-twilight" = {
+  home.file.".local/bin/zen-fast" = {
     source = ./scripts/zen-fast;
     executable = true;
   };
@@ -79,7 +86,7 @@ home.packages = with pkgs; [
     executable = true;
   };
 
-  home.file.".local/bin/cliphist" = {
+  home.file.".local/bin/cliphist-menu" = {
     source = ./scripts/cliphist.sh;
     executable = true;
   };
@@ -94,8 +101,37 @@ home.packages = with pkgs; [
       source "$ZDOTDIR/.zshrc"
     '';
   };
-  
+
   services.swaync.enable = true;
+
+  services.cliphist.enable = true;
+
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        after_sleep_cmd = "hyprctl dispatch dpms on";
+        before_sleep_cmd = "loginctl lock-session";
+        lock_cmd = "pidof hyprlock || hyprlock";
+      };
+      listener = [
+        {
+          timeout = 300;
+          on-timeout = "loginctl lock-session";
+        }
+        {
+          timeout = 330;
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
+        }
+      ];
+    };
+  };
+
+  programs.waybar = {
+    enable = true;
+    systemd.enable = true;
+  };
 
   programs.direnv.enable = true;
 
@@ -103,7 +139,6 @@ home.packages = with pkgs; [
     enable = true;
   };
 
-  imports = [ inputs.lazyvim.homeManagerModules.default ];
+  imports = [inputs.lazyvim.homeManagerModules.default];
   programs.lazyvim.enable = true;
 }
-

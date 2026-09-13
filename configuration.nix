@@ -1,18 +1,19 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, inputs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      # NOTE: hardware-configuration.nix is host-specific and intentionally
-      # gitignored. Generate it on the target machine with:
-      #   sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix
-      ./hardware-configuration.nix
-      inputs.spicetify-nix.nixosModules.default
-    ];
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    # NOTE: hardware-configuration.nix is host-specific and intentionally
+    # gitignored. Generate it on the target machine with:
+    #   sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -30,7 +31,7 @@
   networking.networkmanager.enable = true;
 
   #nix-commands and flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Automatic store garbage collection + faster builds via binary caches
   nix.gc = {
@@ -47,31 +48,28 @@
     "hyprland.cachix.org-1:aED73lESCrJ7+O4cyj+1Voxpjmb5/NhDSBqlHvTSG1M="
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
-  # Let the user run nix commands (build, run, etc.) without sudo
-  nix.settings.trusted-users = [ "root" "ali" ];
-
   # Set your time zone.
   time.timeZone = "Europe/Istanbul";
 
-   services.displayManager.sddm.enable = true;
-   services.displayManager.sddm.wayland.enable = true;
-   # Crucial for Qt6: Use the KDE/Qt6 build of SDDM to fix missing cursors and module errors
-   services.displayManager.sddm.package = pkgs.kdePackages.sddm;
-   services.displayManager.sddm.theme = "pixie";
-   # Required dependencies for Qt6 themes
-   services.displayManager.sddm.extraPackages = with pkgs; [
-     kdePackages.qt5compat
-     kdePackages.qtsvg
-     qt6.qtdeclarative
-   ];
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
+  # Crucial for Qt6: Use the KDE/Qt6 build of SDDM to fix missing cursors and module errors
+  services.displayManager.sddm.package = pkgs.kdePackages.sddm;
+  services.displayManager.sddm.theme = "pixie";
+  # Required dependencies for Qt6 themes
+  services.displayManager.sddm.extraPackages = with pkgs; [
+    kdePackages.qt5compat
+    kdePackages.qtsvg
+    qt6.qtdeclarative
+  ];
 
   #fonts for icons and waybar
   fonts.packages = with pkgs; [
-  lexend
-  nerd-fonts.jetbrains-mono
-  nerd-fonts.symbols-only
-  nerd-fonts.caskaydia-cove
- ];
+    lexend
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
+    nerd-fonts.caskaydia-cove
+  ];
 
   programs.hyprland = {
     enable = true;
@@ -109,7 +107,7 @@
   #enable docker services
   virtualisation.docker.enable = true;
 
-  # Wayland environment variables  
+  # Wayland environment variables
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     HYPRCURSOR_THEME = "rose-pine-hyprcursor";
@@ -119,13 +117,13 @@
   };
 
   # Kernel parameters
-  boot.kernelParams = [ ];
+  boot.kernelParams = [];
 
   # Kernel modules
-  boot.kernelModules = [ ];
+  boot.kernelModules = [];
 
   # Initrd modules
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -147,18 +145,17 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ali = {
     isNormalUser = true;
-    hashedPassword = "$y$j9T$SrFGf/IANp31e26ZiPQ2o0$UaQ1ruggDowaDrOtVN674gPkx.XqyWAEsfp7.UbJ1wA";
     description = "ali";
-    extraGroups = [ "dialout" "networkmanager" "wheel" "input" ];
+    extraGroups = ["dialout" "networkmanager" "wheel"];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
   services.udev.extraRules = ''
-  # CP210x (Silicon Labs) - common on ESP32 boards
-  SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE="0666", GROUP="dialout"
-'';
+    # CP210x (Silicon Labs) - common on ESP32 boards
+    SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE="0660", GROUP="dialout"
+  '';
 
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
@@ -186,7 +183,6 @@
   #enable blueman
   services.blueman.enable = true;
 
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -208,17 +204,18 @@
     cliphist
     wl-clipboard
     (inputs.zen-browser.packages.x86_64-linux.twilight)
-    (inputs.devenv.packages.x86_64-linux.default)
+    # (inputs.devenv.packages.x86_64-linux.default)
     (inputs.rose-pine-hyprcursor.packages.x86_64-linux.default)
     eza
+    spotify
     hyprlock
     kdePackages.dolphin
     docker
     docker-compose
-    bat 
+    bat
     (inputs.pixie-sddm.packages.${pkgs.stdenv.hostPlatform.system}.pixie-sddm.override {
-    background = ./wallpapers/winter-16.png;
-    avatar = ./wallpapers/profile.jpeg;
+      background = ./wallpapers/winter-16.png;
+      avatar = ./wallpapers/profile.jpeg;
     })
     freshfetch
     brightnessctl
@@ -232,23 +229,25 @@
     nwg-look
     nwg-displays
     kdePackages.qtstyleplugin-kvantum
-    kdePackages.kvantum
     poweralertd
     libnotify
     hypridle
     jq
     python3
     cava
-    ];
+    libimobiledevice
+  ];
 
-    #eenable tailscale
-    services.tailscale.enable = true;
-    # Open the firewall for Tailscale (covers the tailnet port and subnet routes)
-    services.tailscale.openFirewall = true;
-    
+  services.usbmuxd.enable = true;
+
+  #eenable tailscale
+  services.tailscale.enable = true;
+  # Open the firewall for Tailscale (covers the tailnet port and subnet routes)
+  services.tailscale.openFirewall = true;
+
   #enable power profiles (for waybar power-profiles-daemon module)
   services.power-profiles-daemon.enable = true;
-    
+
   #enable nix ld
   programs.nix-ld.enable = true;
 
@@ -258,27 +257,26 @@
   # XDG Portal configuration for Hyprland
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk ];
-    configPackages = [ pkgs.hyprland ];
+    extraPortals = [pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk];
+    configPackages = [pkgs.hyprland];
   };
-   
-services.interception-tools = {
-  enable = true;
 
-  plugins = with pkgs; [
-    interception-tools-plugins.caps2esc
-  ];
+  services.interception-tools = {
+    enable = true;
 
-  udevmonConfig = ''
-    - JOB: "${pkgs.interception-tools}/bin/intercept -g $DEVNODE \
-        | ${pkgs.interception-tools-plugins.caps2esc}/bin/caps2esc \
-        | ${pkgs.interception-tools}/bin/uinput -d $DEVNODE"
-      DEVICE:
-        EVENTS:
-          EV_KEY: [KEY_CAPSLOCK, KEY_ESC]
-  '';
-};
+    plugins = with pkgs; [
+      interception-tools-plugins.caps2esc
+    ];
 
+    udevmonConfig = ''
+      - JOB: "${pkgs.interception-tools}/bin/intercept -g $DEVNODE \
+          | ${pkgs.interception-tools-plugins.caps2esc}/bin/caps2esc \
+          | ${pkgs.interception-tools}/bin/uinput -d $DEVNODE"
+        DEVICE:
+          EVENTS:
+            EV_KEY: [KEY_CAPSLOCK, KEY_ESC]
+    '';
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -288,41 +286,35 @@ services.interception-tools = {
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-  
-  # DNS bypass
-  networking.nameservers = [ "127.0.0.1" "::1" ];
-  networking.networkmanager.dns = "none";
-  services.dnscrypt-proxy2 = {
-    enable = true;
+  # DNSCrypt is configured but intentionally disabled.
+  services.dnscrypt-proxy = {
+    enable = false;
     settings = {
       ipv6_servers = false;
       require_dnssec = false;
-      # Used only if all configured sources are unreachable, so DNS still
-      # works when dnscrypt-proxy fails. Replace with a DoH stamp if your
-      # network blocks plaintext DNS.
-      fallback_resolver = "9.9.9.9:53";
-      listen_addresses = [ "127.0.0.1:53" "[::1]:53" ];
-    sources.public-resolvers = {
-      urls = [
-        "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
-        "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
-      ];
-      cache_file = "/var/cache/dnscrypt-proxy/public-resolvers.md";
-      minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+      bootstrap_resolvers = ["9.9.9.11:53" "1.1.1.1:53"];
+      listen_addresses = ["127.0.0.1:53" "[::1]:53"];
+      sources.public-resolvers = {
+        urls = [
+          "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
+          "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
+        ];
+        cache_file = "/var/cache/dnscrypt-proxy/public-resolvers.md";
+        minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+      };
     };
   };
-};
+
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = false;
   # Zapret DPI bypass
-services.zapret = {
-  enable = true;
-  params = [
-    "--dpi-desync=fake"
-    "--dpi-desync-ttl=3"
-  ];
-};
+  services.zapret = {
+    enable = true;
+    params = [
+      "--dpi-desync=fake"
+      "--dpi-desync-ttl=3"
+    ];
+  };
   # PAM configuration for hyprlock
   security.pam.services.hyprlock = {};
 
@@ -341,5 +333,4 @@ services.zapret = {
   # NixOS release the system was first installed with. Independent from the
   # Home Manager stateVersion in home.nix (25.05) — they track different stores.
   system.stateVersion = "25.11"; # Did you read the comment?
-
 }
