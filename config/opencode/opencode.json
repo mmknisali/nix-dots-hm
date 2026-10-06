@@ -1,5 +1,16 @@
 {
-  "plugin": [
-    "oh-my-openagent"
-  ]
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "nixos-search": {
+      "type": "local",
+      "command": ["nix", "run", "github:utensils/mcp-nixos", "--"],
+      "enabled": true
+    },
+    "nixos-files": {
+      "type": "local",
+      "command": ["nix", "run", "github:natsukium/mcp-servers-nix#mcp-server-filesystem", "--", "/etc/nixos"],
+      "enabled": true
+    }
+  }
 }
+

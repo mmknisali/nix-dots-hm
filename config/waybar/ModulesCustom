@@ -141,16 +141,16 @@
 
 "custom/reboot": {
     "format": "󰜉",
-    "on-click": "systemctl reboot",
+    "on-click": "$HOME/.config/hypr/scripts/Wlogout.sh",
     "tooltip": true,
-	"tooltip-format": "Left Click: Reboot",
+	"tooltip-format": "Left Click: Open Power Menu",
 },
     
 "custom/quit": {
     "format": "󰗼",
-    "on-click": "hyprctl dispatch exit",
+    "on-click": "$HOME/.config/hypr/scripts/Wlogout.sh",
     "tooltip": true,
-	"tooltip-format": "Left Click: Exit Hyprland",
+	"tooltip-format": "Left Click: Open Session Menu",
 },
 
 "custom/swaync": {

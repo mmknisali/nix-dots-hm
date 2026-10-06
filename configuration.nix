@@ -3,8 +3,10 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   config,
+  lib,
   pkgs,
-  inputs,
+  username,
+  hostName,
   ...
 }: {
   imports = [
@@ -13,6 +15,7 @@
     # gitignored. Generate it on the target machine with:
     #   sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix
     ./hardware-configuration.nix
+    ./system-packages.nix
   ];
 
   # Bootloader.
@@ -20,7 +23,7 @@
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "Clara"; # Define your hostname.
+  networking.hostName = hostName;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -143,9 +146,9 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.ali = {
+  users.users.${username} = {
     isNormalUser = true;
-    description = "ali";
+    description = username;
     extraGroups = ["dialout" "networkmanager" "wheel"];
     packages = with pkgs; [
       #  thunderbird
@@ -155,6 +158,9 @@
   services.udev.extraRules = ''
     # CP210x (Silicon Labs) - common on ESP32 boards
     SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE="0660", GROUP="dialout"
+
+    # Sony DualShock 3
+    KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0268", MODE="0660", TAG+="uaccess"
   '';
 
   programs.zsh.enable = true;
@@ -167,7 +173,8 @@
   # flake inputs (e.g. zen-browser). `opencode` from nixpkgs is MIT/free and
   # does NOT require this. If you want to scope this down later, switch to
   # `nixpkgs.config.allowUnfreePredicate` to allow only specific package names.
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) ["spotify"];
   #enable bluetooth stuff
   hardware.bluetooth = {
     enable = true;
@@ -182,61 +189,6 @@
 
   #enable blueman
   services.blueman.enable = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    git
-    hyprpaper
-    waybar
-    neovim
-    kitty
-    uwsm
-    rofi
-    swaynotificationcenter
-    playerctl
-    wlogout
-    blueman
-    tailscale
-    polkit_gnome
-    cliphist
-    wl-clipboard
-    (inputs.zen-browser.packages.x86_64-linux.twilight)
-    # (inputs.devenv.packages.x86_64-linux.default)
-    (inputs.rose-pine-hyprcursor.packages.x86_64-linux.default)
-    eza
-    spotify
-    hyprlock
-    kdePackages.dolphin
-    docker
-    docker-compose
-    bat
-    (inputs.pixie-sddm.packages.${pkgs.stdenv.hostPlatform.system}.pixie-sddm.override {
-      background = ./wallpapers/winter-16.png;
-      avatar = ./wallpapers/profile.jpeg;
-    })
-    freshfetch
-    brightnessctl
-    hyprshot
-    hyprpicker
-    grim
-    slurp
-    btop
-    pwvucontrol
-    networkmanagerapplet
-    nwg-look
-    nwg-displays
-    kdePackages.qtstyleplugin-kvantum
-    poweralertd
-    libnotify
-    hypridle
-    jq
-    python3
-    cava
-    libimobiledevice
-  ];
 
   services.usbmuxd.enable = true;
 
