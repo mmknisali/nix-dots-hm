@@ -11,6 +11,7 @@
     ./modules/nixos/hardware.nix
     ./modules/nixos/desktop.nix
     ./modules/nixos/services.nix
+    ./modules/nixos/opencode-container.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
