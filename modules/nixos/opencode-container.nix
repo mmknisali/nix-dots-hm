@@ -14,6 +14,7 @@
         opencode
         git
         cloudflared
+        devenv
         php
         php.packages.composer
         nodejs
