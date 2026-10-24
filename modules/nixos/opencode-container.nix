@@ -15,6 +15,7 @@
         git
         cloudflared
         devenv
+        direnv
         php
         php.packages.composer
         nodejs
