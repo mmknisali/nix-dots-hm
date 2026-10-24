@@ -17,16 +17,14 @@ jobs:
       - name: Create evaluation hardware configuration
         run: |
           cat > hardware-configuration.nix <<'EOF'
-          { ... }: {}
+          { ... }: {
+            fileSystems."/" = { device = "none"; fsType = "tmpfs"; };
+            fileSystems."/boot" = { device = "none"; fsType = "tmpfs"; };
+          }
           EOF
 
-      - name: Evaluate flake
-        run: nix flake check --no-build "path:."
-
       - name: Run repository checks
-        run: |
-          nix build "path:.#checks.x86_64-linux.formatting"
-          nix build "path:.#checks.x86_64-linux.shell-syntax"
+        run: nix flake check --print-build-logs "path:."
 
       - name: Dry-build NixOS configuration
         run: nix build --dry-run "path:.#nixosConfigurations.clara.config.system.build.toplevel"

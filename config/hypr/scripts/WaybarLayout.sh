@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
-# Switch waybar layout via rofi (lists configs in ~/.config/waybar/configs/)
-config_dir=~/.config/waybar/configs
-if [ ! -d "$config_dir" ]; then
-  notify-send "Waybar" "No layout configs found"
-  exit 1
-fi
-layout=$(find "$config_dir" -maxdepth 1 -type f -printf '%f\n' | sort | rofi -dmenu -p "Waybar Layout" -theme-str 'listview {lines: 10;}')
-[ -n "$layout" ] && cp --remove-destination "$config_dir/$layout" ~/.config/waybar/config && systemctl --user restart waybar.service
+# Layout and style are selected declaratively, not copied over managed files.
+exec notify-send "Waybar Configuration" 'Set these Home Manager options:
+dotfiles.waybar.layout: filename from config/waybar/configs/
+dotfiles.waybar.style: filename from config/waybar/style/
+Then rebuild your configuration. This shortcut does not change managed files.'

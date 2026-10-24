@@ -14,7 +14,6 @@
         },
 	"modules": [
 		"custom/menu",
-		"custom/light_dark",
 		"custom/file_manager",
 		"custom/tty",
 		"custom/browser",
@@ -90,7 +89,7 @@
 		"custom/power",
 		"custom/lock",
 		"keyboard-state",
-		"custom/keyboard",
+		"hyprland/language",
 	]
 },
 "group/notify": {
@@ -131,7 +130,6 @@
 		"custom/settings",
 		"custom/audio_settings",
 		"custom/network_settings",
-		"custom/display_settings",
 		"custom/gtk_theme",
 		"custom/kvantum",
 	]
@@ -147,7 +145,7 @@
      "modules": [
         "custom/power",
         "custom/lock",
-        "custom/logout",
+        "custom/quit",
         "custom/reboot"
       ]
 },

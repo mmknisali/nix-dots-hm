@@ -15,11 +15,20 @@ result-*
 *.tmp
 *.swp
 *~
+__pycache__/
+*.pyc
 
 # IDE
 .vscode/
 .idea/
 /hardware-configuration.nix
+
+# Local secrets (password hashes, etc.)
+/secrets.nix
+
+# Tooling artifacts
+/repomix-output.xml
+
 # OS files
 .DS_Store
 Thumbs.db

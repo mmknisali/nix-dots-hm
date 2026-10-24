@@ -33,7 +33,7 @@
 
 "custom/browser": {
 	"format": " ",
-	"on-click": "xdg-open https://",
+	"on-click": "$HOME/.local/bin/zen-fast",
 	"tooltip": true,
 	"tooltip-format": "Launch Browser",
 },
@@ -50,7 +50,7 @@
 	"on-click-right": "$HOME/.config/hypr/UserScripts/WallpaperRandom.sh",
 	"on-click-middle": "$HOME/.config/hypr/scripts/WaybarStyles.sh",
 	"tooltip": true,
-	"tooltip-format": "Left Click: Wallpaper Menu\nMiddle Click: Random wallpaper\nRight Click: Waybar Styles Menu",
+	"tooltip-format": "Left Click: Wallpaper Menu\nMiddle Click: Restart Waybar\nRight Click: Random wallpaper",
 },
 
 "custom/hint": {
@@ -58,14 +58,14 @@
 	"on-click": "$HOME/.config/hypr/scripts/KeyHints.sh",
 	"on-click-right": "$HOME/.config/hypr/scripts/KeyBinds.sh",
 	"tooltip": true,
-	"tooltip-format": "Left Click: Quick Tips\nRight Click: Keybinds",
+	"tooltip-format": "Left Click: Keybind cheat sheet\nRight Click: Keybind cheat sheet",
 },
 
 "custom/dot_update": {
 	"format": " 󰁈 ",
-	"on-click": "$HOME/.config/hypr/scripts/KooLsDotsUpdate.sh",
+	"on-click": "$HOME/.config/hypr/scripts/UpdateFlake.sh",
 	"tooltip": true,
-	"tooltip-format": "Check KooL Dots update\nIf available",
+	"tooltip-format": "Update flake inputs",
 },
 
 // Hypridle inhibitor
@@ -78,22 +78,6 @@
 	"exec": "$HOME/.config/hypr/scripts/Hypridle.sh status",
 	"on-click": "$HOME/.config/hypr/scripts/Hypridle.sh toggle",
 	"on-click-right": "hyprlock"
-},
-
-"custom/keyboard": {
-	"exec": "hyprctl devices -j | jq -r '.keyboards[0].active_keymap // empty'",
-	"interval": 1,
-	"format": " {}",
-	"on-click": "$HOME/.config/hypr/scripts/SwitchKeyboardLayout.sh",
-},
-
-"custom/light_dark": {
-	"format": "󰔎 ",
-	"on-click": "$HOME/.config/hypr/scripts/DarkLight.sh",
-	"on-click-right": "$HOME/.config/hypr/scripts/WaybarStyles.sh",
-	"on-click-middle": "$HOME/.config/hypr/UserScripts/WallpaperSelect.sh",
-	"tooltip": true,
-	"tooltip-format": "Left Click: Switch Dark-Light Themes\nMiddle Click: Wallpaper Menu\nRight Click: Waybar Styles Menu",
 },
 
 "custom/lock": {
@@ -109,7 +93,7 @@
 	"on-click-middle": "$HOME/.config/hypr/UserScripts/WallpaperSelect.sh",
 	"on-click-right": "$HOME/.config/hypr/scripts/WaybarLayout.sh",
 	"tooltip": true,
-	"tooltip-format": "Left Click: Rofi Menu\nMiddle Click: Wallpaper Menu\nRight Click: Waybar Layout Menu",
+	"tooltip-format": "Left Click: Rofi Menu\nMiddle Click: Wallpaper Menu\nRight Click: Declarative Waybar Layout/Style Info",
 },
 // This is a custom cava visualizer
 "custom/cava_mviz": {
@@ -265,12 +249,6 @@
 	"on-click": "nm-connection-editor",
 	"tooltip": true,
 	"tooltip-format": "Network Connections",
-},
-"custom/display_settings": {
-	"format": "󰹑 ",
-	"on-click": "nwg-displays",
-	"tooltip": true,
-	"tooltip-format": "Display Arrangement",
 },
 "custom/gtk_theme": {
 	"format": "󰉼 ",

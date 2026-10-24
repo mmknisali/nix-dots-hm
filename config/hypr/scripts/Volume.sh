@@ -3,24 +3,9 @@
 
 increment="5%"
 
-# Get the default sink
-get_default_sink() {
-    wpctl inspect @DEFAULT_AUDIO_SINK@ 2>/dev/null | head -1 | cut -d' ' -f3
-}
-
-# Get volume level
-get_volume() {
-    wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | awk '{print int($2 * 100)}'
-}
-
-# Check if muted
-is_muted() {
-    wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | grep -q "MUTED"
-}
-
-case "$1" in
+case "${1:-}" in
     --inc)
-        wpctl set-volume @DEFAULT_AUDIO_SINK@ "$increment+"
+        wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ "$increment+"
         ;;
     --dec)
         wpctl set-volume @DEFAULT_AUDIO_SINK@ "$increment-"
@@ -32,7 +17,7 @@ case "$1" in
         wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
         ;;
     --mic-inc)
-        wpctl set-volume @DEFAULT_AUDIO_SOURCE@ "$increment+"
+        wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ "$increment+"
         ;;
     --mic-dec)
         wpctl set-volume @DEFAULT_AUDIO_SOURCE@ "$increment-"

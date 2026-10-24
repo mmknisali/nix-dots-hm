@@ -8,11 +8,9 @@
     wget
     git
     kitty
-    uwsm
     rofi
     playerctl
     wlogout
-    polkit_gnome
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight
     inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
     eza
@@ -34,7 +32,6 @@
     pwvucontrol
     networkmanagerapplet
     nwg-look
-    nwg-displays
     kdePackages.qtstyleplugin-kvantum
     poweralertd
     libnotify
@@ -42,5 +39,10 @@
     python3
     cava
     libimobiledevice
+    mangohud
+    # Launched from the waybar modules (see config/waybar/configs/[TOP] Everforest)
+    gnome-system-monitor
+    baobab
+    nvtopPackages.intel
   ];
 }

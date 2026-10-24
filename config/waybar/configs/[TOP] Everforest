@@ -96,7 +96,7 @@
 
 "cpu#forest": {
 	"format": "Cpu  󰍛  {usage}%",
-	"interval": 1,
+	"interval": 5,
 	"min-length": 5,
 	"format-alt-click": "click",
 	"format-alt": "{icon0}{icon1}{icon2}{icon3} {usage:>2}% 󰍛",
@@ -129,11 +129,7 @@
 "temperature#forest": {
 	"interval": 10,
 	"tooltip": true,
-	"hwmon-path": [
-		"/sys/class/hwmon/hwmon1/temp1_input",
-		"/sys/class/thermal/thermal_zone0/temp"
-	],
-	//"thermal-zone": 0,
+	"thermal-zone": 0,
 	"critical-threshold": 82,
 	"format-critical": "Temp {icon}  {temperatureC}°C",
 	"format": "Temp {icon}  {temperatureC}°C",
@@ -143,4 +139,3 @@
 	"on-click-right": "kitty --title nvtop sh -c 'nvtop'"
 },
 }
-

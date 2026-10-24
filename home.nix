@@ -6,16 +6,14 @@
   username,
   ...
 }: {
-  home.username = "ali";
+  home.username = username;
   home.homeDirectory = "/home/${username}";
   # Home Manager release this config was first used with. Independent from the
   # NixOS system.stateVersion in configuration.nix (25.11).
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
-    xdg-desktop-portal-hyprland
     qt6.qtwayland
-    libsForQt5.qtwayland
     opencode
     wl-clipboard
   ];
@@ -29,22 +27,13 @@
     source = ./config/kitty;
     recursive = true;
   };
-  #home.file.".config/nvim".source = ./config/nvim;
   home.file.".config/rofi".source = ./config/rofi;
   home.file.".config/starship.toml".source = ./config/starship/starship.toml;
-  #home.file.".config/uwsm".source = ./config/uwsm;
-  home.file.".config/waybar" = {
-    source = ./config/waybar;
-    recursive = true;
-  };
   home.file.".config/hyprlock" = {
     source = ./config/hyprlock;
     recursive = true;
   };
   home.file.".config/hypr/hyprlock.conf".source = ./config/hyprlock/hyprlock.conf;
-
-  #  home.file.".config/opencode/opencode.json".source = ./config/opencode/opencode.json;
-  # home.file.".config/opencode/oh-my-openagent.json".source = ./config/opencode/oh-my-openagent.json;
 
   services.hyprpaper = {
     enable = true;
@@ -80,11 +69,6 @@
 
   home.file.".local/bin/zen-warmup" = {
     source = ./scripts/zen-warmup;
-    executable = true;
-  };
-
-  home.file.".local/bin/zen-launch" = {
-    source = ./scripts/zen-launch;
     executable = true;
   };
 
@@ -149,7 +133,12 @@
         eval "$(brew shellenv zsh)"
       fi
 
-      if command -v freshfetch >/dev/null 2>&1; then
+      # The marker is shared by terminals in the same login session, but is
+      # naturally different after a logout/reboot. mkdir makes the claim atomic.
+      session_id="''${XDG_SESSION_ID:-''${HYPRLAND_INSTANCE_SIGNATURE:-}}"
+      if [[ -n "''${XDG_RUNTIME_DIR:-}" && -n "$session_id" ]] \
+        && command -v freshfetch >/dev/null 2>&1 \
+        && mkdir "$XDG_RUNTIME_DIR/freshfetch-$session_id" 2>/dev/null; then
         freshfetch
       fi
     '';
@@ -165,49 +154,44 @@
     VISUAL = "nvim";
   };
 
-  home.activation.removeLegacyConfigDirectories = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
-    for config_dir in hypr kitty waybar hyprlock zsh; do
-      config_path="$HOME/.config/$config_dir"
-      if [[ -L "$config_path" ]]; then
-        legacy_target="$(${pkgs.coreutils}/bin/readlink "$config_path")"
-        case "$legacy_target" in
-          ${builtins.storeDir}/*-home-manager-files/.config/"$config_dir")
-            $DRY_RUN_CMD ${pkgs.coreutils}/bin/rm "$config_path"
-            ;;
-        esac
-      fi
-    done
+  # Discover same-user instances even when NixOS activates Home Manager from
+  # systemd without a compositor environment. Never reload during a dry run.
+  home.activation.reloadHyprland = lib.hm.dag.entryAfter ["linkGeneration"] ''
+    if [[ -z "''${DRY_RUN_CMD:-}" ]]; then
+      PATH=${lib.makeBinPath [pkgs.hyprland pkgs.python3]}:$PATH \
+        ${pkgs.python3}/bin/python3 ${./scripts/reload-hyprland.py}
+    fi
   '';
 
   services.swaync.enable = true;
 
   services.cliphist.enable = true;
-/*
+  services.polkit-gnome.enable = true;
   services.hypridle = {
     enable = true;
     settings = {
       general = {
-        after_sleep_cmd = "hyprctl dispatch dpms on";
+        after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"on\" })'";
         before_sleep_cmd = "loginctl lock-session";
         lock_cmd = "pidof hyprlock || hyprlock";
       };
       listener = [
+        {
+          timeout = 240;
+          on-timeout = "brightnessctl --save set 20%";
+          on-resume = "brightnessctl --restore";
+        }
         {
           timeout = 300;
           on-timeout = "loginctl lock-session";
         }
         {
           timeout = 330;
-          on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
+          on-timeout = "hyprctl dispatch 'hl.dsp.dpms({ action = \"off\" })'";
+          on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"on\" })'";
         }
       ];
     };
-  };
-  */
-  programs.waybar = {
-    enable = true;
-    systemd.enable = true;
   };
 
   programs.direnv.enable = true;
@@ -216,6 +200,6 @@
     enable = true;
   };
 
-  imports = [inputs.lazyvim.homeManagerModules.default];
+  imports = [inputs.lazyvim.homeManagerModules.default ./modules/home/waybar.nix];
   programs.lazyvim.enable = true;
 }

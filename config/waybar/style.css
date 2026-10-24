@@ -95,7 +95,7 @@ window#waybar.empty #window {
 #custom-dot_update,
 #custom-file_manager,
 #custom-keybinds,
-#custom-keyboard,
+#language,
 #custom-light_dark,
 #custom-lock,
 #custom-hint,
@@ -108,7 +108,6 @@ window#waybar.empty #window {
 #custom-reboot,
 #custom-settings,
 #custom-audio_settings,
-#custom-display_settings,
 #custom-gtk_theme,
 #custom-kvantum,
 #custom-network_settings,
@@ -229,5 +228,3 @@ window#waybar.empty #window {
 	border-radius: 5px;
 	background-color: wheat;
 }
-	
-	

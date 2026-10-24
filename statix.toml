@@ -1,0 +1,3 @@
+# Dotted module assignments are deliberate: grouping every NixOS service under
+# one enormous attribute set makes the module harder to navigate.
+disabled = ["repeated_keys"]

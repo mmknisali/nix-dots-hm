@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # Toggle blur effect in Hyprland
+set -euo pipefail
 
-current_blur=$(hyprctl getoption decoration:blur:enabled -j 2>/dev/null | jq -r '.int')
+result=$(hyprctl eval 'hl.config({ decoration = { blur = { enabled = not hl.get_config("decoration.blur.enabled") } } })')
 
-if [ "$current_blur" = "1" ]; then
-    hyprctl keyword decoration:blur:enabled false
-    notify-send "Blur" "Blur disabled"
-else
-    hyprctl keyword decoration:blur:enabled true
-    notify-send "Blur" "Blur enabled"
+# Some IPC errors (such as using the legacy config parser) still exit zero.
+if [[ "$result" != "ok" ]]; then
+    printf 'Failed to toggle blur: %s\n' "$result" >&2
+    exit 1
 fi
+
+notify-send "Blur" "Blur toggled"

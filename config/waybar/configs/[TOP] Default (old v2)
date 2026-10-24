@@ -23,7 +23,6 @@
 
 "modules-left": [
 	"custom/menu",
-	"custom/light_dark",
 	"custom/separator#dot-line",
 	"group/motherboard",
 	"custom/separator#line",
@@ -50,7 +49,7 @@
 	"bluetooth",
 	"group/audio",
 	"keyboard-state",
-	"custom/keyboard",
+	"hyprland/language",
 	"custom/lock",
 	"custom/separator#dot-line",
 	"custom/power",

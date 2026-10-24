@@ -8,11 +8,7 @@
 "temperature": {
 	"interval": 10,
 	"tooltip": true,
-	"hwmon-path": [
-		"/sys/class/hwmon/hwmon1/temp1_input",
-		"/sys/class/thermal/thermal_zone0/temp"
-	],
-	//"thermal-zone": 0,
+	"thermal-zone": 0,
 	"critical-threshold": 82,
 	"format-critical": "{temperatureC}°C {icon}",
 	"format": "{temperatureC}°C {icon}",
@@ -96,7 +92,7 @@
 },
 
 "clock": {
-	"interval": 1,
+	"interval": 60,
     "format": " {:%I:%M %p}", // AM PM format
     //"format": " {:%H:%M:%S}",// 24H
 	"format-alt": " {:%H:%M   %Y, %d %B, %A}",
@@ -153,7 +149,7 @@
 
 "cpu": {
 	"format": "{usage}% 󰍛",
-	"interval": 1,
+	"interval": 5,
 	"min-length": 5,
 	"format-alt-click": "click",
 	"format-alt": "{icon0}{icon1}{icon2}{icon3} {usage:>2}% 󰍛",
@@ -178,7 +174,7 @@
 	"format-en": "US",
 	"format-tr": "TR",
 	"keyboard-name": "at-translated-set-2-keyboard",
-	"on-click": "hyprctl switchxkblayout all next"
+	"on-click": "$HOME/.config/hypr/scripts/SwitchKeyboardLayout.sh"
 },
 
 "hyprland/submap": {
@@ -284,7 +280,7 @@
 },
 
 "network#speed": {
-	"interval": 1,
+	"interval": 5,
 	"format": "{ifname}",
 	"format-wifi": "{icon}  {bandwidthUpBytes}  {bandwidthDownBytes}",
 	"format-ethernet": "󰌘  {bandwidthUpBytes}  {bandwidthDownBytes}",
